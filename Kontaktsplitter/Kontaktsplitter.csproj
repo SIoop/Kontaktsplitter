@@ -78,6 +78,7 @@
     <Compile Include="Model\KundeMap.cs" />
     <Compile Include="Model\Titel.cs" />
     <Compile Include="Model\TitelMap.cs" />
+    <Compile Include="Parser\SalutationParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainForm.resx">
