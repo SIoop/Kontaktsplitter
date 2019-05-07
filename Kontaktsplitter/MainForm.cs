@@ -61,6 +61,7 @@ namespace Kontaktsplitter
             SalutationComboBox.SelectedItem = kunde.Anrede;
             TitelComboBox.SelectedItem = kunde.Titel;
             LastNameTextBox.Text = kunde.Nachname;
+            FirstNameTextBox.Text = kunde.Vorname;
             GenderComboBox.SelectedItem = kunde.Geschlecht;
         }
     }

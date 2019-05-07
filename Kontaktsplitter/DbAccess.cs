@@ -159,7 +159,121 @@ namespace Kontaktsplitter
                         Geschlecht = "weiblich",
                         AnredeNormal = "Frau",
                         AnredeBrief = "Sehr geehrte Frau"
-                    }
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "weiblich",
+                        AnredeNormal = "Frau Dr.",
+                        AnredeBrief = "Sehr geehrte Frau Dr."
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "weiblich",
+                        AnredeNormal = "Frau Prof.",
+                        AnredeBrief = "Sehr geehrte Frau Prof."
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "weiblich",
+                        AnredeNormal = "Mrs",
+                        AnredeBrief = "Dear Mrs"
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "weiblich",
+                        AnredeNormal = "Ms",
+                        AnredeBrief = "Dear Ms"
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "weiblich",
+                        AnredeNormal = "Signora",
+                        AnredeBrief = "Gentile Signora"
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "weiblich",
+                        AnredeNormal = "Mme",
+                        AnredeBrief = "Madame"
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "weiblich",
+                        AnredeNormal = "Señora",
+                        AnredeBrief = "Estimada Señora"
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "männlich",
+                        AnredeNormal = "Herrn",
+                        AnredeBrief = "Sehr geehrter Herr"
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "männlich",
+                        AnredeNormal = "Herrn Dr.",
+                        AnredeBrief = "Sehr geehrter Herr Dr."
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "männlich",
+                        AnredeNormal = "Herrn Prof.",
+                        AnredeBrief = "Sehr geehrter Herr Prof."
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "männlich",
+                        AnredeNormal = "Mr",
+                        AnredeBrief = "Dear Mr"
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "männlich",
+                        AnredeNormal = "Sig.",
+                        AnredeBrief = "Egregio Signor"
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "männlich",
+                        AnredeNormal = "M",
+                        AnredeBrief = "Monsieur"
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "männlich",
+                        AnredeNormal = "Señor",
+                        AnredeBrief = "Estimado Señor"
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "ohne",
+                        AnredeNormal = "Sehr geehrte Damen und Herren",
+                        AnredeBrief = "Sehr geehrte Damen und Herren"
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "ohne",
+                        AnredeNormal = "Dear Sirs",
+                        AnredeBrief = "Dear Sirs"
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "ohne",
+                        AnredeNormal = "Egregi Signori",
+                        AnredeBrief = "Egregi Signori"
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "ohne",
+                        AnredeNormal = "Messieursdames",
+                        AnredeBrief = "Messieursdames"
+                    },
+                    new Anrede()
+                    {
+                        Geschlecht = "ohne",
+                        AnredeNormal = "Estimados Señores y Señoras",
+                        AnredeBrief = "Estimados Señores y Señoras"
+                    },
                 };
                 foreach (var anrede in anredeList)
                 {

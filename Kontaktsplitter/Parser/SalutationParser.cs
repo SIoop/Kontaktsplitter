@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using KellermanSoftware.NameParser;
 using Kontaktsplitter.Model;
 
 namespace Kontaktsplitter.Parser
@@ -10,6 +11,32 @@ namespace Kontaktsplitter.Parser
     public class SalutationParser
     {
         public Kunde Parse(string salutation)
+        {
+            NameParserLogic parser = new NameParserLogic();
+            NameParts parts = parser.ParseName(salutation,NameOrder.AutoDetect);
+            var geschlecht = "ohne";
+            if (parts.IsMale == true)
+            {
+                geschlecht = "männlich";
+            }
+            else if (parts.IsMale == false)
+            {
+                geschlecht = "weiblich";
+            }
+            
+
+            return new Kunde()
+            {
+                Nachname = parts.LastName,
+                Titel = parts.Honorific,
+                Vorname = parts.FirstName,
+                Geschlecht = geschlecht
+            };
+
+            //return ManualCustomerAssignment(salutation);
+        }
+
+        private Kunde ManualCustomerAssignment(string salutation)
         {
             var result = new Kunde();
             var salutations = new List<string>();
@@ -49,7 +76,7 @@ namespace Kontaktsplitter.Parser
             {
                 titels.Add(titel.Kuerzel);
             }
-            
+
             var salutationEntryArray = salutation.Split(' ');
 
             result.Geschlecht = FindGender(salutation);
