@@ -65,7 +65,64 @@ namespace Kontaktsplitter
             }
         }
 
-        public void ReloadTableContent()
+        public static void SaveCustomer(Kunde customer)
+        {
+            using (var context = new DbAccess())
+            {
+                ////Add the new Customer to the context
+               
+                var maxId = context.Kunden.Max(kunde => kunde.Id);
+                customer.Id = maxId + 1;
+                context.Kunden.Add(customer);
+
+                //And save it to the db
+                context.SaveChanges();
+            }
+        }
+
+
+        public static List<Kunde> GetKunden()
+        {
+            using (var context = new DbAccess())
+            {
+                return context.Kunden.ToList();
+            }
+        }
+
+        public static List<Anrede> GetAnreden()
+        {
+            using (var context = new DbAccess())
+            {
+                return context.Anreden.ToList();
+            }
+        }
+
+
+        public static List<Titel> GetTitels()
+        {
+            using (var context = new DbAccess())
+            {
+                return context.Titel.ToList();
+            }
+        }
+
+
+        public static void SaveTitel(Titel titel)
+        {
+            using (var context = new DbAccess())
+            {
+                ////Add the new Titel to the context
+
+                var maxId = context.Titel.Max(tit => tit.Id);
+                titel.Id = maxId + 1;
+                context.Titel.Add(titel);
+
+                //And save it to the db
+                context.SaveChanges();
+            }
+        }
+
+        public static void ReloadTableContent()
         {
             using (var context = new DbAccess())
             {

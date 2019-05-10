@@ -68,6 +68,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddTitelForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddTitelForm.Designer.cs">
+      <DependentUpon>AddTitelForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="DbAccess.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -84,6 +90,9 @@
     <Compile Include="Parser\SalutationParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AddTitelForm.resx">
+      <DependentUpon>AddTitelForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

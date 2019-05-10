@@ -44,28 +44,11 @@ namespace Kontaktsplitter.Parser
 
             List<Anrede> allSalutations;
             List<Titel> allTitels;
-            using (var context = new DbAccess())
-            {
-                context.ReloadTableContent();
 
-                ////Get the existing calculations from the db
-                //var initialCustomers = context.Kunden.ToList();
+            DbAccess.ReloadTableContent();
 
-                //Kunde k1 = new Kunde("Frau", "Sehr geehrte Frau", "", "w", "Sandra", "Berger")
-                //{
-                //    Id = !initialCustomers.Any() ? 1 : initialCustomers.Max(x => x.Id) + 1,
-                //};
-
-                ////Add the new Calculation to the context
-                //context.Kunden.Add(k1);
-
-                //And save it to the db
-                context.SaveChanges();
-
-                //Get all the calculations again from the db (our new Calculation should be there)
-                allSalutations = context.Anreden.ToList();
-                allTitels = context.Titel.ToList();
-            }
+            allSalutations = DbAccess.GetAnreden();
+            allTitels = DbAccess.GetTitels();
 
             foreach (var sal in allSalutations)
             {
