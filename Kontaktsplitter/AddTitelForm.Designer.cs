@@ -118,6 +118,7 @@
             this.Name = "AddTitelForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Titel hinzufügen";
             this.TopMost = true;
             this.TitelGroupBox.ResumeLayout(false);

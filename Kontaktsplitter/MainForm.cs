@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Kontaktsplitter.Model;
 using Kontaktsplitter.Parser;
@@ -11,7 +9,7 @@ namespace Kontaktsplitter
 {
     public partial class MainForm : Form
     {
-        private Kunde currentCustomer = new Kunde();
+        private Kunde _currentCustomer = new Kunde();
         public MainForm()
         {
             InitializeComponent();
@@ -21,12 +19,9 @@ namespace Kontaktsplitter
 
         private void ReloadComboboxContent()
         {
-            List<Anrede> allSalutations;
-            List<Titel> allTitels;
-
             DbAccess.ReloadTableContent();
-            allSalutations = DbAccess.GetAnreden();
-            allTitels = DbAccess.GetTitels();
+            var allSalutations = DbAccess.GetAnreden();
+            var allTitels = DbAccess.GetTitels();
 
 
             SalutationComboBox.Items.Clear();
@@ -35,8 +30,6 @@ namespace Kontaktsplitter
             foreach (var salutation in allSalutations)
             {
                 SalutationComboBox.Items.Add(salutation.AnredeNormal);
-
-
             }
 
             // Titel Kombobox aus Db laden
@@ -51,7 +44,7 @@ namespace Kontaktsplitter
 
             try
             {
-                TitelComboBox.Items.AddRange(titels.Take(5).ToArray());
+                TitelComboBox.Items.AddRange(titels.Take(5).ToArray() as string[]);
             }
             catch (Exception)
             {
@@ -59,28 +52,32 @@ namespace Kontaktsplitter
             }
 
             // Geschlechter Kombobox laden
-            var genderList = new List<string>(new[] { "ohne", "weiblich", "männlich", "divers" });
-            GenderComboBox.Items.Clear();
-            foreach (var gender in genderList)
+            var genderList = new List<string>(new[]
             {
-                GenderComboBox.Items.Add(gender);
-            }
+                Geschlecht.Ohne.ToString(), Geschlecht.Divers.ToString(),
+                Geschlecht.Weiblich.ToString(), Geschlecht.Männlich.ToString()
+            });
+            GenderComboBox.Items.Clear();
+            GenderComboBox.Items.AddRange(genderList.ToArray() as string[]);
+
         }
 
         private void OnConvertSalutationButtonClick(object sender, EventArgs e)
         {
-            currentCustomer = new SalutationParser().Parse(ContactEntryTextBox.Text);
-            SalutationComboBox.SelectedItem = currentCustomer.Anrede;
-            TitelComboBox.SelectedItem = currentCustomer.Titel;
-            LastNameTextBox.Text = currentCustomer.Nachname;
-            FirstNameTextBox.Text = currentCustomer.Vorname;
-            GenderComboBox.SelectedItem = currentCustomer.Geschlecht;
+            _currentCustomer = new SalutationParser().Parse(ContactEntryTextBox.Text);
+            SalutationComboBox.Text = _currentCustomer.Anrede;
+            LetterSalutationTextBox.Text = _currentCustomer.Briefanrede;
+            TitelComboBox.Text = _currentCustomer.Titel;
+            LastNameTextBox.Text = _currentCustomer.Nachname;
+            FirstNameTextBox.Text = _currentCustomer.Vorname;
+            GenderComboBox.SelectedItem = _currentCustomer.Geschlecht.ToString();
         }
 
         private void OnSaveButtonClick(object sender, EventArgs e)
         {
-            DbAccess.SaveCustomer(currentCustomer);
+            DbAccess.SaveCustomer(_currentCustomer);
 
+            // TODO entfernen
             var Kunden = DbAccess.GetKunden();
         }
 
@@ -90,6 +87,11 @@ namespace Kontaktsplitter
             {
                 titelForm.ShowDialog(this);
             }
+        }
+
+        private void OnCancelButtonClick(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

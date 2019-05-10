@@ -12,28 +12,66 @@ namespace Kontaktsplitter.Parser
     {
         public Kunde Parse(string salutation)
         {
+            var manualCheckedCustomer = ManualCustomerAssignment(salutation);
+
+            // Falls geschlecht gefunden soll Frau/Herr entfernt werden, da 
+            // sonst probleme mit der genutzen Bibiliothek auftreten können
+            if (manualCheckedCustomer.Geschlecht == Geschlecht.Männlich)
+            {
+                salutation = Regex.Replace(salutation, "(Herr\\.?\\s|Herrn\\.?\\s|Mr\\.?\\s|M\\.?\\s)", "");
+            }
+            if (manualCheckedCustomer.Geschlecht == Geschlecht.Weiblich)
+            {
+                salutation = Regex.Replace(salutation, "(Frau\\.?\\s|Mrs\\.?\\s|Ms\\.?\\s|frau\\.?\\s)", "");
+            }
+
             NameParserLogic parser = new NameParserLogic();
             NameParts parts = parser.ParseName(salutation,NameOrder.AutoDetect);
-            var geschlecht = "ohne";
+            Geschlecht geschlecht = manualCheckedCustomer.Geschlecht;
+            var anrede = " ";
+            var briefanrede = "Sehr geehrte Damen und Herren";
+
+            //if(manualCheckedCustomer.Geschlecht)
+
             if (parts.IsMale == true)
             {
-                geschlecht = "männlich";
+                geschlecht = Geschlecht.Männlich;
+                anrede = "Herrn";
+                briefanrede = "Sehr geehrter Herr";
             }
             else if (parts.IsMale == false)
             {
-                geschlecht = "weiblich";
+                geschlecht = Geschlecht.Weiblich;
+                anrede = "Frau";
+                briefanrede = "Sehr geehrte Frau";
             }
-            
+
+
+            // Falls durch manuellen Vergleich Titel gefunden wurden diese verwednen. Sonst NameParser Bibiliothek
+            var titel = manualCheckedCustomer.Titel;
+            if (string.IsNullOrWhiteSpace(titel))
+            {
+                titel = parts.Honorific;
+            }
+
+            if (titel != null)
+            {
+                anrede += " " + titel;
+                briefanrede += " " + titel;
+            }
+
 
             return new Kunde()
             {
                 Nachname = parts.LastName,
-                Titel = parts.Honorific,
+                Titel = titel,
                 Vorname = parts.FirstName,
-                Geschlecht = geschlecht
+                Geschlecht = geschlecht,
+                Anrede = anrede,
+                Briefanrede = briefanrede
             };
 
-            //return ManualCustomerAssignment(salutation);
+            
         }
 
         private Kunde ManualCustomerAssignment(string salutation)
@@ -42,13 +80,10 @@ namespace Kontaktsplitter.Parser
             var salutations = new List<string>();
             var titels = new List<string>();
 
-            List<Anrede> allSalutations;
-            List<Titel> allTitels;
-
             DbAccess.ReloadTableContent();
 
-            allSalutations = DbAccess.GetAnreden();
-            allTitels = DbAccess.GetTitels();
+            var allSalutations = DbAccess.GetAnreden();
+            var allTitels = DbAccess.GetTitels();
 
             foreach (var sal in allSalutations)
             {
@@ -82,30 +117,28 @@ namespace Kontaktsplitter.Parser
 
                 if (titels.Contains(currentSal))
                 {
-                    result.Titel = currentSal;
+                    result.Titel += currentSal + " ";
                 }
             }
-
-            result.Nachname = salutationEntryArray.Last();
-
+            
             return result;
         }
 
 
-        private string FindGender(string salutation)
+        private Geschlecht FindGender(string salutation)
         {
             // Geschlecht bestimmen
             if (Regex.IsMatch(salutation, "(Frau\\.?\\s|Mrs\\.?\\s|Ms\\.?\\s|frau\\.?\\s)"))
             {
-                return "weiblich";
+                return Geschlecht.Weiblich;
             }
             else if (Regex.IsMatch(salutation, "(Herr\\.?\\s|Herrn\\.?\\s|Mr\\.?\\s|M\\.?\\s)"))
             {
-                return "männlich";
+                return Geschlecht.Männlich;
             }
             else
             {
-                return "ohne";
+                return Geschlecht.Ohne;
             }
         }
     }

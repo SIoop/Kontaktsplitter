@@ -102,6 +102,7 @@
             this.CancelButton.TabIndex = 16;
             this.CancelButton.Text = "Abbrechen";
             this.CancelButton.UseVisualStyleBackColor = true;
+            this.CancelButton.Click += new System.EventHandler(this.OnCancelButtonClick);
             // 
             // SaveButton
             // 
@@ -115,11 +116,11 @@
             // 
             // ConvertSalutationButton
             // 
-            this.ConvertSalutationButton.Location = new System.Drawing.Point(421, 17);
+            this.ConvertSalutationButton.Location = new System.Drawing.Point(413, 17);
             this.ConvertSalutationButton.Name = "ConvertSalutationButton";
-            this.ConvertSalutationButton.Size = new System.Drawing.Size(75, 23);
+            this.ConvertSalutationButton.Size = new System.Drawing.Size(123, 23);
             this.ConvertSalutationButton.TabIndex = 14;
-            this.ConvertSalutationButton.Text = "Klick mich";
+            this.ConvertSalutationButton.Text = "Kontakt ausplitten";
             this.ConvertSalutationButton.UseVisualStyleBackColor = true;
             this.ConvertSalutationButton.Click += new System.EventHandler(this.OnConvertSalutationButtonClick);
             // 

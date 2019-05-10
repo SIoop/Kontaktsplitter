@@ -83,6 +83,7 @@
     </Compile>
     <Compile Include="Model\Anrede.cs" />
     <Compile Include="Model\AnredeMap.cs" />
+    <Compile Include="Model\Geschlecht.cs" />
     <Compile Include="Model\Kunde.cs" />
     <Compile Include="Model\KundeMap.cs" />
     <Compile Include="Model\Titel.cs" />

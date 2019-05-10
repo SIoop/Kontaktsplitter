@@ -5,7 +5,7 @@
     {
         public Kunde(){}
 
-        public Kunde(string anrede, string briefanrede, string titel, string geschlecht, string vorname, string nachname)
+        public Kunde(string anrede, string briefanrede, string titel, Geschlecht geschlecht, string vorname, string nachname)
         {
             Anrede = anrede;
             Briefanrede = briefanrede;
@@ -18,7 +18,7 @@
         public string Anrede { get; set; }
         public string Briefanrede { get; set; }
         public string Titel { get; set; }
-        public string Geschlecht { get; set; }
+        public Geschlecht Geschlecht { get; set; }
         public string Vorname { get; set; }
         public string Nachname { get; set; }
     }
