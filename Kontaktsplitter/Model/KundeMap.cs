@@ -3,8 +3,14 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Kontaktsplitter.Model
 {
+    /// <summary>
+    /// Die Klasse KundeMap ist eine Hilfsklasse für das OR-Mapping der Tabelle Kunde
+    /// </summary>
     class KundeMap : EntityTypeConfiguration<Kunde>
     {
+        /// <summary>
+        /// Der Konstruktor für die Klasse KundeMap
+        /// </summary>
         public KundeMap()
         {
             ToTable("Kunde");

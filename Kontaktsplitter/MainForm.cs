@@ -7,16 +7,25 @@ using Kontaktsplitter.Parser;
 
 namespace Kontaktsplitter
 {
+    /// <summary>
+    /// Das MainForm ist der Haupteinstiegspunkt der Anwendung. Von hier aus wird die Logik aufgerufen und die Nutzereingaben bearbeitet.
+    /// </summary>
     public partial class MainForm : Form
     {
         private Kunde _currentCustomer = new Kunde();
+
+        /// <summary>
+        /// Der Konstruktor zur Initialisierung der Komponenten
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();
-
             ReloadComboboxContent();
         }
 
+        /// <summary>
+        /// Läd den Inhalt der Comboboxen neu
+        /// </summary>
         private void ReloadComboboxContent()
         {
             DbAccess.ReloadTableContent();
@@ -62,6 +71,11 @@ namespace Kontaktsplitter
 
         }
 
+        /// <summary>
+        ///  Startet das Konvertieren der Anrede in der SalutationParser Klasse und schreibt das Ergebnis in die entsprechenden Felder
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnConvertSalutationButtonClick(object sender, EventArgs e)
         {
             _currentCustomer = new SalutationParser().Parse(ContactEntryTextBox.Text);
@@ -72,7 +86,11 @@ namespace Kontaktsplitter
             FirstNameTextBox.Text = _currentCustomer.Vorname;
             GenderComboBox.SelectedItem = _currentCustomer.Geschlecht.ToString();
         }
-
+        /// <summary>
+        /// Speichert den Kunden in der DB
+        /// </summary>
+        /// <param name="sender">Das sender object</param>
+        /// <param name="e">Die EventArgs e</param>
         private void OnSaveButtonClick(object sender, EventArgs e)
         {
             DbAccess.SaveCustomer(_currentCustomer);
@@ -81,6 +99,11 @@ namespace Kontaktsplitter
             var Kunden = DbAccess.GetKunden();
         }
 
+        /// <summary>
+        /// Öffnet das AddTitelForm
+        /// </summary>
+        /// <param name="sender">Das sender object</param>
+        /// <param name="e">Die EventArgs e</param>
         private void OnAddTitelButtonClick(object sender, EventArgs e)
         {
             using (var titelForm = new AddTitelForm())
@@ -89,6 +112,11 @@ namespace Kontaktsplitter
             }
         }
 
+        /// <summary>
+        /// Schließt die Anwendung
+        /// </summary>
+        /// <param name="sender">Das sender object</param>
+        /// <param name="e">Die EventArgs e</param>
         private void OnCancelButtonClick(object sender, EventArgs e)
         {
             Close();

@@ -1,15 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using KellermanSoftware.NameParser;
 using Kontaktsplitter.Model;
 
 namespace Kontaktsplitter.Parser
 {
+    /// <summary>
+    /// Die Salutation Parser Klasse enthält Logik um Anreden in neue Kunden umzuwandeln
+    /// </summary>
     public class SalutationParser
     {
+        /// <summary>
+        /// Wandelt einen Anreden string in einen Kunden um
+        /// </summary>
+        /// <param name="salutation">Die salutation, welche umgewandelt werden soll</param>
+        /// <returns>Der neue Kunde</returns>
         public Kunde Parse(string salutation)
         {
             var manualCheckedCustomer = ManualCustomerAssignment(salutation);
@@ -74,6 +79,11 @@ namespace Kontaktsplitter.Parser
             
         }
 
+        /// <summary>
+        /// Manuelle Überprüfung der einzelnen bestandteile einer Anrede
+        /// </summary>
+        /// <param name="salutation">Die salutation, welche umgewandelt werden soll</param>
+        /// <returns>Der neue Kunde</returns>
         private Kunde ManualCustomerAssignment(string salutation)
         {
             var result = new Kunde();
@@ -124,15 +134,19 @@ namespace Kontaktsplitter.Parser
             return result;
         }
 
-
-        private Geschlecht FindGender(string salutation)
+        /// <summary>
+        /// Überprüft, ob aus einem string auf das Geschlecht geschlossen werden kann
+        /// </summary>
+        /// <param name="salutationPart">Der Teil einer Anrede, welcher überprüft werden soll.</param>
+        /// <returns>Das Gechlecht, falls nicht eindeutig erkannt Ohne</returns>
+        private Geschlecht FindGender(string salutationPart)
         {
             // Geschlecht bestimmen
-            if (Regex.IsMatch(salutation, "(Frau\\.?\\s|Mrs\\.?\\s|Ms\\.?\\s|frau\\.?\\s)"))
+            if (Regex.IsMatch(salutationPart, "(Frau\\.?\\s|Mrs\\.?\\s|Ms\\.?\\s|frau\\.?\\s)"))
             {
                 return Geschlecht.Weiblich;
             }
-            else if (Regex.IsMatch(salutation, "(Herr\\.?\\s|Herrn\\.?\\s|Mr\\.?\\s|M\\.?\\s)"))
+            else if (Regex.IsMatch(salutationPart, "(Herr\\.?\\s|Herrn\\.?\\s|Mr\\.?\\s|M\\.?\\s)"))
             {
                 return Geschlecht.Männlich;
             }

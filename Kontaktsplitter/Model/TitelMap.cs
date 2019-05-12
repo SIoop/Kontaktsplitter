@@ -3,8 +3,14 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Kontaktsplitter.Model
 {
+    /// <summary>
+    /// Die Klasse TitelMap ist eine Hilfsklasse für das OR-Mapping der Tabelle Titel
+    /// </summary>
     class TitelMap : EntityTypeConfiguration<Titel>
     {
+        /// <summary>
+        /// Der Konstruktor für die Klasse TitelMap
+        /// </summary>
         public TitelMap()
         {
             ToTable("Titel");

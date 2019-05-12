@@ -1,6 +1,9 @@
 ﻿namespace Kontaktsplitter.Model
 {
-   
+
+    /// <summary>
+    /// Die Klasse Kunde stellt die verschiedenen Bestandteile des Kunden dar und entspricht der Datenbanktabelle Kunde
+    /// </summary>
     public class Kunde
     {
         public Kunde(){}

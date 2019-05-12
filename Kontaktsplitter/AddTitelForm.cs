@@ -1,23 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Kontaktsplitter.Model;
 
 namespace Kontaktsplitter
 {
+    /// <summary>
+    /// Die AddTitelForm ermöglicht das Anlegen neue Titel
+    /// </summary>
     public partial class AddTitelForm : Form
     {
+        /// <summary>
+        /// Der Konstruktor zur Initialisierung der Komponenten
+        /// </summary>
         public AddTitelForm()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Speichert den neuen Titel in der DB
+        /// </summary>
+        /// <param name="sender">Das sender object</param>
+        /// <param name="e">Die EventArgs e</param>
         private void OnSaveButtonClick(object sender, EventArgs e)
         {
             try
@@ -28,17 +32,17 @@ namespace Kontaktsplitter
                     Kuerzel = ShortTitelTextBox.Text
                 };
 
+                // neuer Titel in DB speichern
                 DbAccess.SaveTitel(titel);
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 MessageBox.Show(@"Es ist ein Fehler beim Speichern des Titels aufgetreten", @"Fehler",
-                    MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
-            this.Close();
 
-
+            // Nach erfolgreichem speichern kann das Fenster wieder geschlossen werden
+            Close();
         }
     }
 }

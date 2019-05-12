@@ -3,8 +3,14 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Kontaktsplitter.Model
 {
+    /// <summary>
+    /// Die Klasse AnredeMap ist eine Hilfsklasse für das OR-Mapping der Tabelle Anrede
+    /// </summary>
     class AnredeMap : EntityTypeConfiguration<Anrede>
     {
+        /// <summary>
+        /// Der Konstruktor für die Klasse AnredeMap
+        /// </summary>
         public AnredeMap()
         {
             ToTable("Anrede");

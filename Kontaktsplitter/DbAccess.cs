@@ -1,14 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Data.SQLite;
 using System.Linq;
 using Kontaktsplitter.Model;
 
 namespace Kontaktsplitter
 {
+    /// <summary>
+    /// Die DbAccess beinhaltet die Instanz der Verbindung zu Datenbank
+    /// </summary>
     public sealed class DbAccess : DbContext
     {
         public DbSet<Kunde> Kunden { get; set; }
@@ -20,51 +23,45 @@ namespace Kontaktsplitter
 
         }
 
+        /// <summary>
+        /// Die statische Datenbankverbindung
+        /// </summary>
+        /// <returns></returns>
         public static DbConnection GetConnection()
         {
             var connection = ConfigurationManager.ConnectionStrings["SqlLiteDb"];
             var factory = DbProviderFactories.GetFactory(connection.ProviderName);
             var dbCon = factory.CreateConnection();
-            dbCon.ConnectionString = connection.ConnectionString;
-            return dbCon;
+            if (dbCon != null)
+            {
+                dbCon.ConnectionString = connection.ConnectionString;
+                return dbCon;
+            }
+            throw new Exception("Die verbindung zur Datenbank konnte nicht hergestellt werden. Bitte überprüfen Sie, ob die Datei vorhanden ist.");
         }
 
+        /// <summary>
+        /// Wird aufgerufen beim erstellen der DB Modelle
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             modelBuilder.Configurations.Add(new KundeMap());
+            modelBuilder.Configurations.Add(new TitelMap());
+            modelBuilder.Configurations.Add(new AnredeMap());
             base.OnModelCreating(modelBuilder);
         }
 
-        private static string dataSource = "SqlLiteDemo.db";
+        /// <summary>
+        /// Der Name der Datenbank
+        /// </summary>
+        public static string DataSource { get; } = "SqlLiteDemo.db";
 
-        public void CreateTables()
-        {
-
-
-            using (SQLiteConnection connection = new SQLiteConnection())
-            {
-                connection.ConnectionString = "Data Source=" + dataSource;
-                connection.Open();
-                SQLiteCommand command = new SQLiteCommand(connection);
-
-                // Erstellen der Tabelle, sofern diese noch nicht existiert.
-                //command.CommandText = "CREATE TABLE IF NOT EXISTS Kunde ( id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, Anrede VARCHAR(100), " +
-                //                      "Briefanrede VARCHAR(100), Titel VARCHAR(100), Geschlecht VARCHAR(100), Vorname VARCHAR(100), Nachname VARCHAR(100));";
-                //command.ExecuteNonQuery();
-
-                //command.CommandText = "CREATE TABLE IF NOT EXISTS Anrede ( id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, Geschlecht VARCHAR(100), " +
-                //                      "Anrede VARCHAR(100), Briefanrede VARCHAR(100), Sprache VARCHAR(100));";
-
-                //command.ExecuteNonQuery();
-
-
-
-                connection.Close();
-                connection.Dispose();
-            }
-        }
-
+        /// <summary>
+        /// Speichert den Kunden in der Datenbankdatei
+        /// </summary>
+        /// <param name="customer"></param>
         public static void SaveCustomer(Kunde customer)
         {
             using (var context = new DbAccess())
@@ -80,7 +77,10 @@ namespace Kontaktsplitter
             }
         }
 
-
+        /// <summary>
+        /// Gibt alle Kunden aus der Datenbankdatei zurück
+        /// </summary>
+        /// <returns>Die Liste der Kunden</returns>
         public static List<Kunde> GetKunden()
         {
             using (var context = new DbAccess())
@@ -89,6 +89,10 @@ namespace Kontaktsplitter
             }
         }
 
+        /// <summary>
+        /// Gibt alle Anreden aus der Datenbankdatei zurück
+        /// </summary>
+        /// <returns>Die Anreden der Kunden</returns>
         public static List<Anrede> GetAnreden()
         {
             using (var context = new DbAccess())
@@ -97,7 +101,10 @@ namespace Kontaktsplitter
             }
         }
 
-
+        /// <summary>
+        /// Gibt alle Titel aus der Datenbankdatei zurück
+        /// </summary>
+        /// <returns>Die Titel der Kunden</returns>
         public static List<Titel> GetTitels()
         {
             using (var context = new DbAccess())
@@ -106,7 +113,9 @@ namespace Kontaktsplitter
             }
         }
 
-
+        /// <summary>
+        /// Speichert den Titel in der Datenbankdatei
+        /// </summary>
         public static void SaveTitel(Titel titel)
         {
             using (var context = new DbAccess())
@@ -122,6 +131,10 @@ namespace Kontaktsplitter
             }
         }
 
+        /// <summary>
+        /// Läd die Titel und Anreden der Datenbank neu
+        /// Hierbei werden alle bisherigen einträge überschrieben
+        /// </summary>
         public static void ReloadTableContent()
         {
             using (var context = new DbAccess())
@@ -199,15 +212,12 @@ namespace Kontaktsplitter
                 {
                     context.Titel.Add(titel);
                 }
-                //And save it to the db
+                // In DB speichern
                 context.SaveChanges();
             }
 
             using (var context = new DbAccess())
             {
-
-                // TODO Denis
-
                 // Vorhandene Anreden Befüllen
                 var anredeList = new List<Anrede>()
                 {
@@ -336,7 +346,7 @@ namespace Kontaktsplitter
                 {
                     context.Anreden.Add(anrede);
                 }
-                //And save it to the db
+                // In DB speichern
                 context.SaveChanges();
             }
 

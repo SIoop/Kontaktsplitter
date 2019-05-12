@@ -3,20 +3,23 @@ using System.Windows.Forms;
 
 namespace Kontaktsplitter
 {
+    /// <summary>
+    /// Die Program Klasse ist der Start der Anwendung.
+    /// </summary>
     static class Program
     {
         /// <summary>
-        /// The main entry point for the application.
+        /// The Einstiegspunkt der Anwendung.
         /// </summary>
         [STAThread]
         static void Main()
         {
+            // Starten der MainForm
             try
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new MainForm());
-
             }
             catch (Exception e)
             {
