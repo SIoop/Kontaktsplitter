@@ -42,7 +42,7 @@ namespace Kontaktsplitter
             }
 
             // Titel Kombobox aus Db laden
-            var titels = allTitels.Select(titel => titel.Kuerzel).ToList();
+            List<string> titels = allTitels.Select(titel => titel.Kuerzel).ToList();
             var autoCompleteCollection = new AutoCompleteStringCollection();
 
             autoCompleteCollection.AddRange(titels.ToArray());
@@ -53,7 +53,7 @@ namespace Kontaktsplitter
 
             try
             {
-                TitelComboBox.Items.AddRange(titels.Take(5).ToArray() as string[]);
+                TitelComboBox.Items.AddRange(titels.Take(5).ToArray<object>());
             }
             catch (Exception)
             {
@@ -67,7 +67,7 @@ namespace Kontaktsplitter
                 Geschlecht.Weiblich.ToString(), Geschlecht.Männlich.ToString()
             });
             GenderComboBox.Items.Clear();
-            GenderComboBox.Items.AddRange(genderList.ToArray() as string[]);
+            GenderComboBox.Items.AddRange(genderList.ToArray<object>());
 
         }
 
@@ -94,9 +94,6 @@ namespace Kontaktsplitter
         private void OnSaveButtonClick(object sender, EventArgs e)
         {
             DbAccess.SaveCustomer(_currentCustomer);
-
-            // TODO entfernen
-            var Kunden = DbAccess.GetKunden();
         }
 
         /// <summary>
