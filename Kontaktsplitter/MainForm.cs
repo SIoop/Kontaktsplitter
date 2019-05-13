@@ -28,7 +28,7 @@ namespace Kontaktsplitter
         /// </summary>
         private void ReloadComboboxContent()
         {
-            DbAccess.ReloadTableContent();
+           DbAccess.ReloadTableContent();
             var allSalutations = DbAccess.GetAnreden();
             var allTitels = DbAccess.GetTitels();
 
@@ -42,7 +42,7 @@ namespace Kontaktsplitter
             }
 
             // Titel Kombobox aus Db laden
-            List<string> titels = allTitels.Select(titel => titel.Kuerzel).ToList();
+            var titels = allTitels.Select(titel => titel.Kuerzel).ToList();
             var autoCompleteCollection = new AutoCompleteStringCollection();
 
             autoCompleteCollection.AddRange(titels.ToArray());

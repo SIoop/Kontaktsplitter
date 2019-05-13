@@ -193,7 +193,7 @@
             this.GenderLabel.Name = "GenderLabel";
             this.GenderLabel.Size = new System.Drawing.Size(64, 13);
             this.GenderLabel.TabIndex = 6;
-            this.GenderLabel.Text = "Geschlecht:";
+            this.GenderLabel.Text = "InternalGeschlecht:";
             // 
             // TitelLabel
             // 

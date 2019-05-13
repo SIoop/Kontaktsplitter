@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using KellermanSoftware.NameParser;
 using Kontaktsplitter.Model;
@@ -17,6 +19,16 @@ namespace Kontaktsplitter.Parser
         /// <returns>Der neue Kunde</returns>
         public Kunde Parse(string salutation)
         {
+            DbAccess.ReloadTableContent();
+            var anrede = FindSalutation(salutation);
+
+            if (anrede != null)
+            {
+                salutation = salutation.Replace(anrede.AnredeBrief, string.Empty);
+                salutation = salutation.Replace(anrede.AnredeNormal, string.Empty);
+            }
+
+            salutation = PreFormatSalutationString(salutation);
             var manualCheckedCustomer = ManualCustomerAssignment(salutation);
 
             // Falls geschlecht gefunden soll Frau/Herr entfernt werden, da 
@@ -31,25 +43,40 @@ namespace Kontaktsplitter.Parser
             }
 
             NameParserLogic parser = new NameParserLogic();
-            NameParts parts = parser.ParseName(salutation,NameOrder.AutoDetect);
-            Geschlecht geschlecht = manualCheckedCustomer.Geschlecht;
-            var anrede = " ";
-            var briefanrede = "Sehr geehrte Damen und Herren";
+            NameParts parts = parser.ParseName(salutation, NameOrder.AutoDetect);
 
-            //if(manualCheckedCustomer.Geschlecht)
+            // Falls anrede nicht manuell gefunden werden konnte
+            if (anrede == null)
+            {
+                if (parts.IsMale == true)
+                {
+                    anrede = new Anrede()
+                    {
+                        AnredeNormal = "Herrn",
+                        AnredeBrief = "Sehr geehrter Herr",
+                        InternalGeschlecht = Geschlecht.Männlich
+                    };
+                }
+                else if (parts.IsMale == false)
+                {
+                    anrede = new Anrede()
+                    {
+                        AnredeNormal = "Frau",
+                        AnredeBrief = "Sehr geehrte Frau",
+                        InternalGeschlecht = Geschlecht.Weiblich
+                    };
+                }
+                else
+                {
+                    anrede = new Anrede()
+                    {
+                        AnredeNormal = "",
+                        AnredeBrief = "Sehr geehrte Damen und Herren",
+                        InternalGeschlecht = Geschlecht.Ohne
+                    };
+                }
+            }
 
-            if (parts.IsMale == true)
-            {
-                geschlecht = Geschlecht.Männlich;
-                anrede = "Herrn";
-                briefanrede = "Sehr geehrter Herr";
-            }
-            else if (parts.IsMale == false)
-            {
-                geschlecht = Geschlecht.Weiblich;
-                anrede = "Frau";
-                briefanrede = "Sehr geehrte Frau";
-            }
 
 
             // Falls durch manuellen Vergleich Titel gefunden wurden diese verwednen. Sonst NameParser Bibiliothek
@@ -61,22 +88,54 @@ namespace Kontaktsplitter.Parser
 
             if (titel != null)
             {
-                anrede += " " + titel;
-                briefanrede += " " + titel;
+                anrede.AnredeNormal += " " + titel;
+                anrede.AnredeBrief += " " + titel;
             }
 
+            // Last Name bereits manuell gefunden
+            var lastName = parts.LastName;
+            if (!string.IsNullOrWhiteSpace(manualCheckedCustomer.Nachname))
+            {
+                lastName = manualCheckedCustomer.Nachname;
+            }
+
+            // Last Name bereits manuell gefunden
+            var firstName = parts.FirstName;
+            if (!string.IsNullOrWhiteSpace(manualCheckedCustomer.Nachname))
+            {
+                firstName = manualCheckedCustomer.Vorname;
+            }
 
             return new Kunde()
             {
-                Nachname = parts.LastName,
+                Nachname = lastName,
                 Titel = titel,
-                Vorname = parts.FirstName,
-                Geschlecht = geschlecht,
-                Anrede = anrede,
-                Briefanrede = briefanrede
+                Vorname = firstName,
+                Geschlecht = anrede.InternalGeschlecht,
+                Anrede = anrede.AnredeNormal,
+                Briefanrede = anrede.AnredeBrief
             };
 
-            
+
+        }
+
+
+        private string PreFormatSalutationString(string salutation)
+        {
+            var resultString = salutation;
+
+            // markierter Nachnamen finden durch " und mit - verbinden
+            if (salutation.Contains("\""))
+            {
+                var startIndexLastName = salutation.IndexOf('\"');
+                var lastName = salutation.Substring(startIndexLastName + 1).Replace('\"', ' ').TrimStart().TrimEnd();
+                var lastNameArray = lastName.Split(' ');
+                var formatedLastName = string.Join("-", lastNameArray);
+
+                resultString = salutation.Remove(startIndexLastName) + formatedLastName;
+            }
+
+            return resultString;
         }
 
         /// <summary>
@@ -90,7 +149,31 @@ namespace Kontaktsplitter.Parser
             var salutations = new List<string>();
             var titels = new List<string>();
 
-            DbAccess.ReloadTableContent();
+            // DbAccess.ReloadTableContent();
+
+
+            // Falls Nachname mit vom beginnt
+            if (salutation.Contains("vom"))
+            {
+                result.Nachname = salutation.Substring(salutation.IndexOf("vom", StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (salutation.Contains(","))
+            {
+                var salutationArray = salutation.Split(' ');
+                for (int i = 0; i < salutationArray.Length; i++)
+                {
+                    if (salutationArray[i].Contains(","))
+                    {
+                        result.Nachname = salutationArray[i].Replace(",", "");
+                        result.Vorname = salutationArray[i + 1];
+                        break;
+                    }
+
+                }
+            }
+
+
 
             var allSalutations = DbAccess.GetAnreden();
             var allTitels = DbAccess.GetTitels();
@@ -130,30 +213,51 @@ namespace Kontaktsplitter.Parser
                     result.Titel += currentSal + " ";
                 }
             }
-            
+
             return result;
         }
 
+
+
         /// <summary>
-        /// Überprüft, ob aus einem string auf das Geschlecht geschlossen werden kann
+        /// Überprüft, ob aus einem string auf die Anrede geschlossen werden kann
+        /// </summary>
+        /// <param name="salutation">Der Teil einer Anrede, welcher überprüft werden soll.</param>
+        /// <returns>Die Anrede, falls nicht eindeutig erkannt Null</returns>
+        private Anrede FindSalutation(string salutation)
+        {
+            var anreden = DbAccess.GetAnreden();
+            foreach (var anrede in anreden)
+            {
+                if (salutation.Contains(anrede.AnredeNormal) || salutation.Contains(anrede.AnredeBrief))
+                {
+                    return anrede;
+                }
+            }
+
+
+            return null;
+        }
+
+        /// <summary>
+        /// Überprüft, ob aus einem string auf das InternalGeschlecht geschlossen werden kann
         /// </summary>
         /// <param name="salutationPart">Der Teil einer Anrede, welcher überprüft werden soll.</param>
         /// <returns>Das Gechlecht, falls nicht eindeutig erkannt Ohne</returns>
         private Geschlecht FindGender(string salutationPart)
         {
-            // Geschlecht bestimmen
+            // InternalGeschlecht bestimmen
             if (Regex.IsMatch(salutationPart, "(Frau\\.?\\s|Mrs\\.?\\s|Ms\\.?\\s|frau\\.?\\s)"))
             {
                 return Geschlecht.Weiblich;
             }
-            else if (Regex.IsMatch(salutationPart, "(Herr\\.?\\s|Herrn\\.?\\s|Mr\\.?\\s|M\\.?\\s)"))
+
+            if (Regex.IsMatch(salutationPart, "(Herr\\.?\\s|Herrn\\.?\\s|Mr\\.?\\s|M\\.?\\s)"))
             {
                 return Geschlecht.Männlich;
             }
-            else
-            {
-                return Geschlecht.Ohne;
-            }
+
+            return Geschlecht.Ohne;
         }
     }
 }

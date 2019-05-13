@@ -223,121 +223,113 @@ namespace Kontaktsplitter
                 {
                     new Anrede()
                     {
-                        Geschlecht = "weiblich",
+                        Id = 0,
+                        Geschlecht = Geschlecht.Weiblich.ToString(),
                         AnredeNormal = "Frau",
                         AnredeBrief = "Sehr geehrte Frau"
                     },
                     new Anrede()
                     {
-                        Geschlecht = "weiblich",
-                        AnredeNormal = "Frau Dr.",
-                        AnredeBrief = "Sehr geehrte Frau Dr."
-                    },
-                    new Anrede()
-                    {
-                        Geschlecht = "weiblich",
-                        AnredeNormal = "Frau Prof.",
-                        AnredeBrief = "Sehr geehrte Frau Prof."
-                    },
-                    new Anrede()
-                    {
-                        Geschlecht = "weiblich",
+                        Id = 1,
+                        Geschlecht = Geschlecht.Weiblich.ToString(),
                         AnredeNormal = "Mrs",
                         AnredeBrief = "Dear Mrs"
                     },
                     new Anrede()
                     {
-                        Geschlecht = "weiblich",
+                        Id = 2,
+                        Geschlecht = Geschlecht.Weiblich.ToString(),
                         AnredeNormal = "Ms",
                         AnredeBrief = "Dear Ms"
                     },
                     new Anrede()
                     {
-                        Geschlecht = "weiblich",
+                        Id = 3,
+                        Geschlecht =Geschlecht.Weiblich.ToString(),
                         AnredeNormal = "Signora",
                         AnredeBrief = "Gentile Signora"
                     },
                     new Anrede()
                     {
-                        Geschlecht = "weiblich",
+                        Id = 4,
+                        Geschlecht = Geschlecht.Weiblich.ToString(),
                         AnredeNormal = "Mme",
                         AnredeBrief = "Madame"
                     },
                     new Anrede()
                     {
-                        Geschlecht = "weiblich",
+                        Id = 5,
+                        Geschlecht = Geschlecht.Weiblich.ToString(),
                         AnredeNormal = "Señora",
                         AnredeBrief = "Estimada Señora"
                     },
                     new Anrede()
                     {
-                        Geschlecht = "männlich",
+                        Id = 6,
+                        Geschlecht = Geschlecht.Männlich.ToString(),
                         AnredeNormal = "Herrn",
                         AnredeBrief = "Sehr geehrter Herr"
                     },
-                    new Anrede()
+                   new Anrede()
                     {
-                        Geschlecht = "männlich",
-                        AnredeNormal = "Herrn Dr.",
-                        AnredeBrief = "Sehr geehrter Herr Dr."
-                    },
-                    new Anrede()
-                    {
-                        Geschlecht = "männlich",
-                        AnredeNormal = "Herrn Prof.",
-                        AnredeBrief = "Sehr geehrter Herr Prof."
-                    },
-                    new Anrede()
-                    {
-                        Geschlecht = "männlich",
+                        Id = 7,
+                        Geschlecht = Geschlecht.Männlich.ToString(),
                         AnredeNormal = "Mr",
                         AnredeBrief = "Dear Mr"
                     },
                     new Anrede()
                     {
-                        Geschlecht = "männlich",
+                        Id = 8,
+                        Geschlecht = Geschlecht.Männlich.ToString(),
                         AnredeNormal = "Sig.",
                         AnredeBrief = "Egregio Signor"
                     },
                     new Anrede()
                     {
-                        Geschlecht = "männlich",
+                        Id = 9,
+                        Geschlecht = Geschlecht.Männlich.ToString(),
                         AnredeNormal = "M",
                         AnredeBrief = "Monsieur"
                     },
                     new Anrede()
                     {
-                        Geschlecht = "männlich",
+                        Id = 10,
+                        Geschlecht = Geschlecht.Männlich.ToString(),
                         AnredeNormal = "Señor",
                         AnredeBrief = "Estimado Señor"
                     },
                     new Anrede()
                     {
-                        Geschlecht = "ohne",
+                        Id = 11,
+                        Geschlecht = Geschlecht.Ohne.ToString(),
                         AnredeNormal = "Sehr geehrte Damen und Herren",
                         AnredeBrief = "Sehr geehrte Damen und Herren"
                     },
                     new Anrede()
                     {
-                        Geschlecht = "ohne",
+                        Id = 12,
+                        Geschlecht = Geschlecht.Ohne.ToString(),
                         AnredeNormal = "Dear Sirs",
                         AnredeBrief = "Dear Sirs"
                     },
                     new Anrede()
                     {
-                        Geschlecht = "ohne",
+                        Id = 13,
+                        Geschlecht = Geschlecht.Ohne.ToString(),
                         AnredeNormal = "Egregi Signori",
                         AnredeBrief = "Egregi Signori"
                     },
                     new Anrede()
                     {
-                        Geschlecht = "ohne",
+                        Id = 14,
+                        Geschlecht = Geschlecht.Ohne.ToString(),
                         AnredeNormal = "Messieursdames",
                         AnredeBrief = "Messieursdames"
                     },
                     new Anrede()
                     {
-                        Geschlecht = "ohne",
+                        Id = 15,
+                        Geschlecht = Geschlecht.Ohne.ToString(),
                         AnredeNormal = "Estimados Señores y Señoras",
                         AnredeBrief = "Estimados Señores y Señoras"
                     },
