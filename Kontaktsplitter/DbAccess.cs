@@ -151,55 +151,56 @@ namespace Kontaktsplitter
                     new Titel()
                     {
                         Id = 0,
-                        Kuerzel = "Dr",
+                        Kuerzel = "Dr.",
                         Bezeichnung = "Doktor"
                     },
                     new Titel()
                     {
                         Id = 1,
-                        Kuerzel = "Prof",
-                        Bezeichnung = "Proffessor"
+                        Kuerzel = "Prof.",
+                        Bezeichnung = "Professor"
                     },
                     new Titel()
                     {
                         Id = 2,
-                        Kuerzel = "Ing",
+                        Kuerzel = "Ing.",
                         Bezeichnung = "Ingenieur"
                     },
                     new Titel()
                     {
                         Id = 3,
-                        Kuerzel = "B",
-                        Bezeichnung = "Bachelor"
+                        Kuerzel = "Dipl.",
+                        Bezeichnung = "Diplom"
+                        
                     },
                     new Titel()
                     {
                         Id = 4,
-                        Kuerzel = "M",
+                        Kuerzel = "M.",
                         Bezeichnung = "Bachelor"
                     },
                     new Titel()
                     {
                         Id = 5,
-                        Kuerzel = "Dipl",
-                        Bezeichnung = "Diplom"
+                        Kuerzel = "B.",
+                        Bezeichnung = "Bachelor"
                     },
                     new Titel()
                     {
                         Id = 6,
-                        Kuerzel = "rer",
+                        Kuerzel = "rer.",
                         Bezeichnung = "Rerum"
                     },
                     new Titel()
                     {
                         Id = 7,
-                        Kuerzel = "mult",
+                        Kuerzel = "mult.",
                         Bezeichnung = "Multiple"
                     },
                     new Titel()
                     {
                         Id = 8,
-                        Kuerzel = "nat",
+                        Kuerzel = "nat.",
                         Bezeichnung = "Naturwissenschaftler"
                     },
 
@@ -229,15 +230,15 @@ namespace Kontaktsplitter
                     {
                         Id = 1,
                         Geschlecht = Geschlecht.Weiblich.ToString(),
-                        AnredeNormal = "Mrs",
-                        AnredeBrief = "Dear Mrs"
+                        AnredeNormal = "Mrs.",
+                        AnredeBrief = "Dear Mrs."
                     },
                     new Anrede()
                     {
                         Id = 2,
                         Geschlecht = Geschlecht.Weiblich.ToString(),
-                        AnredeNormal = "Ms",
-                        AnredeBrief = "Dear Ms"
+                        AnredeNormal = "Ms.",
+                        AnredeBrief = "Dear Ms."
                     },
                     new Anrede()
                     {
@@ -250,7 +251,7 @@ namespace Kontaktsplitter
                     {
                         Id = 4,
                         Geschlecht = Geschlecht.Weiblich.ToString(),
-                        AnredeNormal = "Mme",
+                        AnredeNormal = "Mme.",
                         AnredeBrief = "Madame"
                     },
                     new Anrede()
@@ -271,8 +272,8 @@ namespace Kontaktsplitter
                     {
                         Id = 7,
                         Geschlecht = Geschlecht.Männlich.ToString(),
-                        AnredeNormal = "Mr",
-                        AnredeBrief = "Dear Mr"
+                        AnredeNormal = "Mr.",
+                        AnredeBrief = "Dear Mr."
                     },
                     new Anrede()
                     {
@@ -336,6 +337,13 @@ namespace Kontaktsplitter
                         Geschlecht = Geschlecht.Divers.ToString(),
                         AnredeNormal = "",
                         AnredeBrief = "Guten Tag"
+                    },
+                    new Anrede()
+                    {
+                        Id = 17,
+                        Geschlecht = Geschlecht.Männlich.ToString(),
+                        AnredeNormal = "Herr",
+                        AnredeBrief = "Sehr geehrter Herr"
                     },
                 };
                 foreach (var anrede in anredeList)

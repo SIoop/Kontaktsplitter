@@ -78,7 +78,7 @@ namespace Kontaktsplitter
         /// <param name="e"></param>
         private void OnConvertSalutationButtonClick(object sender, EventArgs e)
         {
-            _currentCustomer = new SalutationParser().Parse(ContactEntryTextBox.Text);
+            _currentCustomer = new SalutationParser().StartParser(ContactEntryTextBox.Text);
             SalutationComboBox.Text = _currentCustomer.Anrede;
             LetterSalutationTextBox.Text = _currentCustomer.Briefanrede;
             TitelComboBox.Text = _currentCustomer.Titel;
