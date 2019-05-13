@@ -11,7 +11,7 @@ namespace KontaktsplitterTests.Parser
         [TestMethod]
         public void SimpleGermanNameTest()
         {
-            var kunde = new SalutationParser().Parse("Frau  Sandra Berger");
+            var kunde = new SalutationParser().Parse("Frau Sandra Berger");
             Assert.AreEqual(kunde.Anrede, "Frau");
             Assert.AreEqual(kunde.Geschlecht, Geschlecht.Weiblich);
             Assert.AreEqual(kunde.Nachname, "Berger");
@@ -112,7 +112,7 @@ namespace KontaktsplitterTests.Parser
             Assert.AreEqual(kunde.Geschlecht, Geschlecht.Männlich);
             Assert.AreEqual(kunde.Nachname, "Russwurm");
             Assert.AreEqual(kunde.Vorname, "Winfried");
-            Assert.AreEqual(kunde.Titel, "Dr.");
+            Assert.AreEqual(kunde.Titel, "Dr");
             Assert.AreEqual(kunde.Briefanrede, "Sehr geehrter Herr Dr");
         }
 

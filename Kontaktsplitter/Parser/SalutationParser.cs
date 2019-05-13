@@ -145,7 +145,7 @@ namespace Kontaktsplitter.Parser
         private Kunde ManualCustomerAssignment(string salutation)
         {
             var result = new Kunde();
-           
+
             // DbAccess.ReloadTableContent();
 
 
@@ -170,8 +170,7 @@ namespace Kontaktsplitter.Parser
                 }
             }
 
-           var allTitels = DbAccess.GetTitels();
-            
+            var allTitels = DbAccess.GetTitels();
             var salutationEntryArray = salutation.Split(' ');
 
             result.Geschlecht = FindGender(salutation);
@@ -181,15 +180,18 @@ namespace Kontaktsplitter.Parser
             {
                 // Mögliche Punkte entfernen
                 var currentSal = salutationPart.TrimEnd('.');
-
-
-                if (allTitels.Select(t => t.Kuerzel).Contains(currentSal))
+                var currentTitel = allTitels.Find(t => t.Kuerzel == currentSal || t.Bezeichnung == currentSal);
+                if (currentTitel != null)
                 {
-                    result.Titel += currentSal + " ";
+                    result.Titel += currentTitel.Kuerzel + " ";
                 }
             }
 
-            result.Titel = result.Titel.TrimEnd();
+            if (result.Titel != null)
+            {
+                result.Titel = result.Titel.TrimEnd();
+
+            }
 
             return result;
         }
@@ -206,13 +208,11 @@ namespace Kontaktsplitter.Parser
             var anreden = DbAccess.GetAnreden();
             foreach (var anrede in anreden)
             {
-                if (salutation.Contains(anrede.AnredeNormal) || salutation.Contains(anrede.AnredeBrief))
+                if (salutation.Contains(anrede.AnredeNormal + " ") || salutation.Contains(anrede.AnredeBrief + " "))
                 {
                     return anrede;
                 }
             }
-
-
             return null;
         }
 

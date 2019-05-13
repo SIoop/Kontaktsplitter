@@ -66,13 +66,13 @@ namespace Kontaktsplitter
         {
             using (var context = new DbAccess())
             {
-                ////Add the new Customer to the context
+                // Neuen Kunden hinzufügen
                
                 var maxId = context.Kunden.Max(kunde => kunde.Id);
                 customer.Id = maxId + 1;
                 context.Kunden.Add(customer);
 
-                //And save it to the db
+                // In DB speichern
                 context.SaveChanges();
             }
         }
@@ -120,13 +120,10 @@ namespace Kontaktsplitter
         {
             using (var context = new DbAccess())
             {
-                ////Add the new Titel to the context
-
                 var maxId = context.Titel.Max(tit => tit.Id);
                 titel.Id = maxId + 1;
                 context.Titel.Add(titel);
 
-                //And save it to the db
                 context.SaveChanges();
             }
         }
@@ -332,6 +329,13 @@ namespace Kontaktsplitter
                         Geschlecht = Geschlecht.Ohne.ToString(),
                         AnredeNormal = "Estimados Señores y Señoras",
                         AnredeBrief = "Estimados Señores y Señoras"
+                    },
+                    new Anrede()
+                    {
+                        Id = 16,
+                        Geschlecht = Geschlecht.Divers.ToString(),
+                        AnredeNormal = "",
+                        AnredeBrief = "Guten Tag"
                     },
                 };
                 foreach (var anrede in anredeList)

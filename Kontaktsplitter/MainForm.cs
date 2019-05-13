@@ -41,7 +41,7 @@ namespace Kontaktsplitter
                 SalutationComboBox.Items.Add(salutation.AnredeNormal);
             }
 
-            // Titel Kombobox aus Db laden
+            // Titel Kombobox aus Db laden und Seperate Vollständige Lise für Auto-Complete
             var titels = allTitels.Select(titel => titel.Kuerzel).ToList();
             var autoCompleteCollection = new AutoCompleteStringCollection();
 
