@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using KellermanSoftware.NameParser;
@@ -146,16 +145,14 @@ namespace Kontaktsplitter.Parser
         private Kunde ManualCustomerAssignment(string salutation)
         {
             var result = new Kunde();
-            var salutations = new List<string>();
-            var titels = new List<string>();
-
+           
             // DbAccess.ReloadTableContent();
 
 
-            // Falls Nachname mit vom beginnt
-            if (salutation.Contains("vom"))
+            // Falls Nachname mit Freiherr beginnt
+            if (salutation.Contains("Freiherr"))
             {
-                result.Nachname = salutation.Substring(salutation.IndexOf("vom", StringComparison.OrdinalIgnoreCase));
+                result.Nachname = salutation.Substring(salutation.IndexOf("Freiherr", StringComparison.OrdinalIgnoreCase));
             }
 
             if (salutation.Contains(","))
@@ -173,33 +170,11 @@ namespace Kontaktsplitter.Parser
                 }
             }
 
-
-
-            var allSalutations = DbAccess.GetAnreden();
-            var allTitels = DbAccess.GetTitels();
-
-            foreach (var sal in allSalutations)
-            {
-                salutations.Add(sal.AnredeNormal);
-            }
-
-            foreach (var titel in allTitels)
-            {
-                titels.Add(titel.Kuerzel);
-            }
-
+           var allTitels = DbAccess.GetTitels();
+            
             var salutationEntryArray = salutation.Split(' ');
 
             result.Geschlecht = FindGender(salutation);
-
-            // Anrede nach verschiedenen bestandteilen bestimmen
-            foreach (var salutationPart in salutationEntryArray)
-            {
-                if (salutations.Contains(salutationPart))
-                {
-                    result.Anrede = salutationPart;
-                }
-            }
 
             // Titel herausfinden
             foreach (var salutationPart in salutationEntryArray)
@@ -208,11 +183,13 @@ namespace Kontaktsplitter.Parser
                 var currentSal = salutationPart.TrimEnd('.');
 
 
-                if (titels.Contains(currentSal))
+                if (allTitels.Select(t => t.Kuerzel).Contains(currentSal))
                 {
                     result.Titel += currentSal + " ";
                 }
             }
+
+            result.Titel = result.Titel.TrimEnd();
 
             return result;
         }
@@ -238,6 +215,9 @@ namespace Kontaktsplitter.Parser
 
             return null;
         }
+
+
+
 
         /// <summary>
         /// Überprüft, ob aus einem string auf das InternalGeschlecht geschlossen werden kann

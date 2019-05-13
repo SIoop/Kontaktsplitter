@@ -1,7 +1,8 @@
 ﻿using Kontaktsplitter.Model;
+using Kontaktsplitter.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Kontaktsplitter.Parser.Tests
+namespace KontaktsplitterTests.Parser
 {
     [TestClass]
     public class SalutationParserTests
