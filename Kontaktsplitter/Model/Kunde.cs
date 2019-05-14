@@ -1,4 +1,6 @@
-﻿namespace Kontaktsplitter.Model
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Kontaktsplitter.Model
 {
 
     /// <summary>
@@ -13,7 +15,7 @@
             Anrede = anrede;
             Briefanrede = briefanrede;
             Titel = titel;
-            Geschlecht = geschlecht;
+            InternalGeschlecht = geschlecht;
             Vorname = vorname;
             Nachname = nachname;
         }
@@ -21,7 +23,14 @@
         public string Anrede { get; set; }
         public string Briefanrede { get; set; }
         public string Titel { get; set; }
-        public Geschlecht Geschlecht { get; set; }
+        public string Geschlecht
+        {
+            get { return InternalGeschlecht.ToString(); }
+            set { InternalGeschlecht = GeschlechtHelper.GetGeschlecht(value); }
+        }
+
+        [NotMapped]
+        public Geschlecht InternalGeschlecht { get; set; }
         public string Vorname { get; set; }
         public string Nachname { get; set; }
     }

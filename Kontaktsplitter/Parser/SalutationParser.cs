@@ -89,9 +89,9 @@ namespace Kontaktsplitter.Parser
             salutation = ParseTitel(salutation, salutationArray, result);
 
             // Gschlecht per regex bestimmen
-            if (result.Geschlecht == Geschlecht.Ohne)
+            if (result.InternalGeschlecht == Geschlecht.Ohne)
             {
-                result.Geschlecht = FindGender(salutation);
+                result.InternalGeschlecht = FindGender(salutation);
             }
 
 
@@ -182,7 +182,7 @@ namespace Kontaktsplitter.Parser
                 Nachname = lastName,
                 Titel = titel,
                 Vorname = firstName,
-                Geschlecht = anrede.InternalGeschlecht,
+                InternalGeschlecht = anrede.InternalGeschlecht,
                 Anrede = anrede.AnredeNormal,
                 Briefanrede = anrede.AnredeBrief
             };

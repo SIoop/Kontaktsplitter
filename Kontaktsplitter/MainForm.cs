@@ -93,7 +93,26 @@ namespace Kontaktsplitter
         /// <param name="e">Die EventArgs e</param>
         private void OnSaveButtonClick(object sender, EventArgs e)
         {
-            DbAccess.SaveCustomer(_currentCustomer);
+            try
+            {
+                DbAccess.SaveCustomer(_currentCustomer);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(@"Beim speichern des Kunden ist ein Fehler aufgetreten  \n"
+                                + exception.Message, @"Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            MessageBox.Show(@"Kunde wurde erfolgreich gespeichert", @"Erfolg", MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+
+            SalutationComboBox.Text = string.Empty;
+            LetterSalutationTextBox.Text = string.Empty;
+            TitelComboBox.Text = string.Empty;
+            GenderComboBox.Text = string.Empty;
+            FirstNameTextBox.Text = string.Empty;
+            LastNameTextBox.Text = string.Empty;
         }
 
         /// <summary>
@@ -156,7 +175,7 @@ namespace Kontaktsplitter
         /// <param name="e">Die EventArgs e</param>
         private void OnGenderComboBoxLeave(object sender, EventArgs e)
         {
-            _currentCustomer.Geschlecht = GeschlechtHelper.GetGeschlecht(GenderComboBox.Text);
+            _currentCustomer.InternalGeschlecht = GeschlechtHelper.GetGeschlecht(GenderComboBox.Text);
         }
 
         /// <summary>
