@@ -5,7 +5,7 @@
     /// </summary>
     public enum Geschlecht
     {
-        Männlich, Weiblich, Divers, Ohne
+        Ohne, Männlich, Weiblich, Divers
     }
 
     /// <summary>

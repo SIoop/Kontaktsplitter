@@ -93,6 +93,16 @@ namespace Kontaktsplitter
         /// <param name="e">Die EventArgs e</param>
         private void OnSaveButtonClick(object sender, EventArgs e)
         {
+            // Falls keine Kundendaten eingegeben Fehler
+            if (string.IsNullOrWhiteSpace(_currentCustomer.Anrede) && string.IsNullOrWhiteSpace(_currentCustomer.Briefanrede) &&
+                string.IsNullOrWhiteSpace(_currentCustomer.Nachname) && string.IsNullOrWhiteSpace(_currentCustomer.Vorname))
+            {
+                MessageBox.Show(@"Bitte geben Sie zuerst Kundendaten ein.", @"Achtung", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                return;
+            }
+
+
             try
             {
                 DbAccess.SaveCustomer(_currentCustomer);
@@ -125,6 +135,15 @@ namespace Kontaktsplitter
             using (var titelForm = new AddTitelForm())
             {
                 titelForm.ShowDialog(this);
+
+                // Titel neu laden für AutoComplete
+                var allTitels = DbAccess.GetTitels();
+                // Titel Kombobox aus Db laden und Seperate Vollständige Lise für Auto-Complete
+                var titels = allTitels.Select(titel => titel.Kuerzel).ToList();
+                var autoCompleteCollection = new AutoCompleteStringCollection();
+
+                autoCompleteCollection.AddRange(titels.ToArray());
+                TitelComboBox.AutoCompleteCustomSource = autoCompleteCollection;
             }
         }
 

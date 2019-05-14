@@ -24,6 +24,14 @@ namespace Kontaktsplitter
         /// <param name="e">Die EventArgs e</param>
         private void OnSaveButtonClick(object sender, EventArgs e)
         {
+            // Falls keine Kundendaten eingegeben Fehler
+            if (string.IsNullOrWhiteSpace(TitelTextBox.Text) || string.IsNullOrWhiteSpace(ShortTitelTextBox.Text))
+            {
+                MessageBox.Show(@"Bitte geben Sie zuerst einen vollständigen Titel ein.", @"Achtung", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                return;
+            }
+
             try
             {
                 var titel = new Titel()
