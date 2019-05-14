@@ -130,6 +130,7 @@
             this.LastNameTextBox.Name = "LastNameTextBox";
             this.LastNameTextBox.Size = new System.Drawing.Size(215, 20);
             this.LastNameTextBox.TabIndex = 13;
+            this.LastNameTextBox.Leave += new System.EventHandler(this.OnLastNameTextBoxLeave);
             // 
             // FirstNameTextBox
             // 
@@ -137,6 +138,7 @@
             this.FirstNameTextBox.Name = "FirstNameTextBox";
             this.FirstNameTextBox.Size = new System.Drawing.Size(215, 20);
             this.FirstNameTextBox.TabIndex = 12;
+            this.FirstNameTextBox.Leave += new System.EventHandler(this.OnFirstNameTextBoxLeave);
             // 
             // LetterSalutationTextBox
             // 
@@ -144,6 +146,7 @@
             this.LetterSalutationTextBox.Name = "LetterSalutationTextBox";
             this.LetterSalutationTextBox.Size = new System.Drawing.Size(215, 20);
             this.LetterSalutationTextBox.TabIndex = 11;
+            this.LetterSalutationTextBox.Leave += new System.EventHandler(this.OnLetterSalutationTextBoxLeave);
             // 
             // TitelComboBox
             // 
@@ -154,6 +157,7 @@
             this.TitelComboBox.Name = "TitelComboBox";
             this.TitelComboBox.Size = new System.Drawing.Size(215, 21);
             this.TitelComboBox.TabIndex = 10;
+            this.TitelComboBox.Leave += new System.EventHandler(this.OnTitelComboBoxLeave);
             // 
             // GenderComboBox
             // 
@@ -167,6 +171,7 @@
             this.GenderComboBox.Name = "GenderComboBox";
             this.GenderComboBox.Size = new System.Drawing.Size(215, 21);
             this.GenderComboBox.TabIndex = 9;
+            this.GenderComboBox.Leave += new System.EventHandler(this.OnGenderComboBoxLeave);
             // 
             // LastNameLabel
             // 
@@ -236,6 +241,7 @@
             this.SalutationComboBox.Name = "SalutationComboBox";
             this.SalutationComboBox.Size = new System.Drawing.Size(215, 21);
             this.SalutationComboBox.TabIndex = 2;
+            this.SalutationComboBox.Leave += new System.EventHandler(this.OnSalutationComboBoxLeave);
             // 
             // ContactEntryLabel
             // 

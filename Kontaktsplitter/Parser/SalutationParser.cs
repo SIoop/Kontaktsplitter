@@ -86,13 +86,14 @@ namespace Kontaktsplitter.Parser
 
 
 
-            result.Geschlecht = FindGender(salutation);
-
-
-
-
-
             salutation = ParseTitel(salutation, salutationArray, result);
+
+            // Gschlecht per regex bestimmen
+            if (result.Geschlecht == Geschlecht.Ohne)
+            {
+                result.Geschlecht = FindGender(salutation);
+            }
+
 
             var anrede = FindSalutation(salutation);
 
@@ -175,6 +176,7 @@ namespace Kontaktsplitter.Parser
                 firstName = parts.FirstName;
             }
 
+            // neuer Kunde erstellen und zurückgeben, falls einer der Werte bisher null ist -> string.Empty
             return new Kunde()
             {
                 Nachname = lastName,
@@ -250,7 +252,7 @@ namespace Kontaktsplitter.Parser
                 return Geschlecht.Weiblich;
             }
 
-            if (Regex.IsMatch(salutationPart, "(Herr\\.?\\s|Herrn\\.?\\s|Mr\\.?\\s|M\\.?\\s)"))
+            if (Regex.IsMatch(salutationPart, "(Herr\\.?\\s|Herrn\\.?\\s|Mr\\.?\\s|M\\.?\\s|herr\\n?\\.?\\s)"))
             {
                 return Geschlecht.Männlich;
             }

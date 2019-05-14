@@ -68,8 +68,12 @@ namespace Kontaktsplitter
             {
                 // Neuen Kunden hinzufügen
                 // Da keine DB-Managementsystem vorhanden ist muss die ID selbst vergeben werden.
-               var maxId = context.Kunden.Max(kunde => kunde.Id);
-                customer.Id = maxId + 1;
+                var id = 0;
+                if (context.Kunden.ToList().Count != 0)
+                {
+                    id = context.Kunden.Max(kunde => kunde.Id) + 1;
+                }
+                customer.Id = id;
                 context.Kunden.Add(customer);
 
                 // In DB speichern
@@ -81,7 +85,7 @@ namespace Kontaktsplitter
         /// Gibt alle Kunden aus der Datenbankdatei zurück
         /// </summary>
         /// <returns>Die Liste der Kunden</returns>
-        public static List<Kunde> GetKunden()
+        public static List<Kunde> GetCustomer()
         {
             using (var context = new DbAccess())
             {
@@ -93,7 +97,7 @@ namespace Kontaktsplitter
         /// Gibt alle Anreden aus der Datenbankdatei zurück
         /// </summary>
         /// <returns>Die Anreden der Kunden</returns>
-        public static List<Anrede> GetAnreden()
+        public static List<Anrede> GetSalutation()
         {
             using (var context = new DbAccess())
             {
@@ -143,7 +147,7 @@ namespace Kontaktsplitter
                 context.Anreden.RemoveRange(context.Anreden.ToList());
 
                 context.SaveChanges();
-                
+
             }
 
             // Titel befüllen
@@ -175,7 +179,7 @@ namespace Kontaktsplitter
                         Id = 3,
                         Kuerzel = "Dipl.",
                         Bezeichnung = "Diplom"
-                        
+
                     },
                     new Titel()
                     {

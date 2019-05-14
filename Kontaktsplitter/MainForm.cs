@@ -29,7 +29,7 @@ namespace Kontaktsplitter
         private void ReloadComboboxContent()
         {
             // DbAccess.ReloadTableContent();
-            var allSalutations = DbAccess.GetAnreden();
+            var allSalutations = DbAccess.GetSalutation();
             var allTitels = DbAccess.GetTitels();
 
 
@@ -117,6 +117,66 @@ namespace Kontaktsplitter
         private void OnCancelButtonClick(object sender, EventArgs e)
         {
             Close();
+        }
+
+        /// <summary>
+        /// Update Briefanrede beim verlassen der TextBox
+        /// </summary>
+        /// <param name="sender">Das sender object</param>
+        /// <param name="e">Die EventArgs e</param>
+        private void OnLetterSalutationTextBoxLeave(object sender, EventArgs e)
+        {
+            _currentCustomer.Briefanrede = LetterSalutationTextBox.Text;
+        }
+
+        /// <summary>
+        /// Update Anrede beim verlassen der CoboBox
+        /// </summary>
+        /// <param name="sender">Das sender object</param>
+        /// <param name="e">Die EventArgs e</param>
+        private void OnSalutationComboBoxLeave(object sender, EventArgs e)
+        {
+            _currentCustomer.Anrede = SalutationComboBox.Text;
+        }
+
+        /// <summary>
+        /// Update Titel beim verlassen der ComoBox
+        /// </summary>
+        /// <param name="sender">Das sender object</param>
+        /// <param name="e">Die EventArgs e</param>
+        private void OnTitelComboBoxLeave(object sender, EventArgs e)
+        {
+            _currentCustomer.Titel = TitelComboBox.Text;
+        }
+
+        /// <summary>
+        /// Update Geschlecht beim verlassen der Comobox
+        /// </summary>
+        /// <param name="sender">Das sender object</param>
+        /// <param name="e">Die EventArgs e</param>
+        private void OnGenderComboBoxLeave(object sender, EventArgs e)
+        {
+            _currentCustomer.Geschlecht = GeschlechtHelper.GetGeschlecht(GenderComboBox.Text);
+        }
+
+        /// <summary>
+        /// Update Vorname beim verlassen der TextBox
+        /// </summary>
+        /// <param name="sender">Das sender object</param>
+        /// <param name="e">Die EventArgs e</param>
+        private void OnFirstNameTextBoxLeave(object sender, EventArgs e)
+        {
+            _currentCustomer.Vorname = FirstNameTextBox.Text;
+        }
+
+        /// <summary>
+        /// Update Nachname beim verlassen der TextBox
+        /// </summary>
+        /// <param name="sender">Das sender object</param>
+        /// <param name="e">Die EventArgs e</param>
+        private void OnLastNameTextBoxLeave(object sender, EventArgs e)
+        {
+            _currentCustomer.Nachname = LastNameTextBox.Text;
         }
     }
 }
