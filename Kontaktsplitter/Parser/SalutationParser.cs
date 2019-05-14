@@ -17,7 +17,7 @@ namespace Kontaktsplitter.Parser
         /// <returns>Der neue Kunde</returns>
         public Kunde StartParser(string salutation)
         {
-            DbAccess.ReloadTableContent();
+            // DbAccess.ReloadTableContent();
             salutation = PreFormatSalutationString(salutation);
             return ManualCustomerAssignment(salutation);
         }
@@ -156,7 +156,9 @@ namespace Kontaktsplitter.Parser
             if (titel != null)
             {
                 anrede.AnredeNormal += " " + titel;
+                anrede.AnredeNormal = anrede.AnredeNormal.TrimStart();
                 anrede.AnredeBrief += " " + titel;
+                anrede.AnredeBrief = anrede.AnredeBrief.TrimStart();
             }
 
             // Nachname  manuell gefunden

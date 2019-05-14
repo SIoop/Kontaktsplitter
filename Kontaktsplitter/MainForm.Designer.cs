@@ -120,7 +120,7 @@
             this.ConvertSalutationButton.Name = "ConvertSalutationButton";
             this.ConvertSalutationButton.Size = new System.Drawing.Size(123, 23);
             this.ConvertSalutationButton.TabIndex = 14;
-            this.ConvertSalutationButton.Text = "Kontakt ausplitten";
+            this.ConvertSalutationButton.Text = "Kontakt aufsplitten";
             this.ConvertSalutationButton.UseVisualStyleBackColor = true;
             this.ConvertSalutationButton.Click += new System.EventHandler(this.OnConvertSalutationButtonClick);
             // 
@@ -193,7 +193,7 @@
             this.GenderLabel.Name = "GenderLabel";
             this.GenderLabel.Size = new System.Drawing.Size(64, 13);
             this.GenderLabel.TabIndex = 6;
-            this.GenderLabel.Text = "InternalGeschlecht:";
+            this.GenderLabel.Text = "Geschlecht:";
             // 
             // TitelLabel
             // 
@@ -250,7 +250,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.CancelButton;
             this.ClientSize = new System.Drawing.Size(800, 335);
             this.Controls.Add(this.ContactSplitGroupBox);
             this.MaximizeBox = false;

@@ -39,6 +39,7 @@ namespace Kontaktsplitter
             {
                 MessageBox.Show(@"Es ist ein Fehler beim Speichern des Titels aufgetreten", @"Fehler",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
             // Nach erfolgreichem speichern kann das Fenster wieder geschlossen werden

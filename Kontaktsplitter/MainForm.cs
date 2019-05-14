@@ -28,7 +28,7 @@ namespace Kontaktsplitter
         /// </summary>
         private void ReloadComboboxContent()
         {
-           DbAccess.ReloadTableContent();
+            // DbAccess.ReloadTableContent();
             var allSalutations = DbAccess.GetAnreden();
             var allTitels = DbAccess.GetTitels();
 

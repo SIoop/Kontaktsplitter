@@ -67,8 +67,8 @@ namespace Kontaktsplitter
             using (var context = new DbAccess())
             {
                 // Neuen Kunden hinzufügen
-               
-                var maxId = context.Kunden.Max(kunde => kunde.Id);
+                // Da keine DB-Managementsystem vorhanden ist muss die ID selbst vergeben werden.
+               var maxId = context.Kunden.Max(kunde => kunde.Id);
                 customer.Id = maxId + 1;
                 context.Kunden.Add(customer);
 
@@ -120,6 +120,7 @@ namespace Kontaktsplitter
         {
             using (var context = new DbAccess())
             {
+                // Da keine DB-Managementsystem vorhanden ist muss die ID selbst vergeben werden.
                 var maxId = context.Titel.Max(tit => tit.Id);
                 titel.Id = maxId + 1;
                 context.Titel.Add(titel);
@@ -134,6 +135,7 @@ namespace Kontaktsplitter
         /// </summary>
         public static void ReloadTableContent()
         {
+            
             using (var context = new DbAccess())
             {
                 context.Titel.RemoveRange(context.Titel.ToList());
@@ -268,83 +270,83 @@ namespace Kontaktsplitter
                         AnredeNormal = "Herrn",
                         AnredeBrief = "Sehr geehrter Herr"
                     },
-                   new Anrede()
+                    new Anrede()
                     {
                         Id = 7,
+                        Geschlecht = Geschlecht.Männlich.ToString(),
+                        AnredeNormal = "Herr",
+                        AnredeBrief = "Sehr geehrter Herr"
+                    },
+                   new Anrede()
+                    {
+                        Id = 8,
                         Geschlecht = Geschlecht.Männlich.ToString(),
                         AnredeNormal = "Mr.",
                         AnredeBrief = "Dear Mr."
                     },
                     new Anrede()
                     {
-                        Id = 8,
+                        Id = 9,
                         Geschlecht = Geschlecht.Männlich.ToString(),
                         AnredeNormal = "Sig.",
                         AnredeBrief = "Egregio Signor"
                     },
                     new Anrede()
                     {
-                        Id = 9,
+                        Id = 10,
                         Geschlecht = Geschlecht.Männlich.ToString(),
                         AnredeNormal = "M",
                         AnredeBrief = "Monsieur"
                     },
                     new Anrede()
                     {
-                        Id = 10,
+                        Id = 11,
                         Geschlecht = Geschlecht.Männlich.ToString(),
                         AnredeNormal = "Señor",
                         AnredeBrief = "Estimado Señor"
                     },
                     new Anrede()
                     {
-                        Id = 11,
+                        Id = 12,
                         Geschlecht = Geschlecht.Ohne.ToString(),
                         AnredeNormal = "Sehr geehrte Damen und Herren",
                         AnredeBrief = "Sehr geehrte Damen und Herren"
                     },
                     new Anrede()
                     {
-                        Id = 12,
+                        Id = 13,
                         Geschlecht = Geschlecht.Ohne.ToString(),
                         AnredeNormal = "Dear Sirs",
                         AnredeBrief = "Dear Sirs"
                     },
                     new Anrede()
                     {
-                        Id = 13,
+                        Id = 14,
                         Geschlecht = Geschlecht.Ohne.ToString(),
                         AnredeNormal = "Egregi Signori",
                         AnredeBrief = "Egregi Signori"
                     },
                     new Anrede()
                     {
-                        Id = 14,
+                        Id = 15,
                         Geschlecht = Geschlecht.Ohne.ToString(),
                         AnredeNormal = "Messieursdames",
                         AnredeBrief = "Messieursdames"
                     },
                     new Anrede()
                     {
-                        Id = 15,
+                        Id = 16,
                         Geschlecht = Geschlecht.Ohne.ToString(),
                         AnredeNormal = "Estimados Señores y Señoras",
                         AnredeBrief = "Estimados Señores y Señoras"
                     },
                     new Anrede()
                     {
-                        Id = 16,
-                        Geschlecht = Geschlecht.Divers.ToString(),
-                        AnredeNormal = "",
-                        AnredeBrief = "Guten Tag"
-                    },
-                    new Anrede()
-                    {
                         Id = 17,
-                        Geschlecht = Geschlecht.Männlich.ToString(),
-                        AnredeNormal = "Herr",
-                        AnredeBrief = "Sehr geehrter Herr"
-                    },
+                        Geschlecht = Geschlecht.Divers.ToString(),
+                        AnredeNormal = "Guten Tag",
+                        AnredeBrief = "Guten Tag"
+                    }
                 };
                 foreach (var anrede in anredeList)
                 {
