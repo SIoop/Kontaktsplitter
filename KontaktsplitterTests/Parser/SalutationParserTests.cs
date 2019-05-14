@@ -72,12 +72,12 @@ namespace KontaktsplitterTests.Parser
         public void ItalianLastNameTest()
         {
             var kunde = new SalutationParser().StartParser("Estobar y Gonzales");
-            Assert.AreEqual(kunde.Anrede, "Señor");
-            Assert.AreEqual(kunde.Geschlecht, Geschlecht.Männlich);
+            Assert.AreEqual(kunde.Anrede, "");
+            Assert.AreEqual(kunde.Geschlecht, Geschlecht.Ohne);
             Assert.AreEqual(kunde.Nachname, "Estobar y Gonzales");
-            Assert.AreEqual(kunde.Vorname, "");
+            Assert.AreEqual(kunde.Vorname, null);
             Assert.AreEqual(kunde.Titel, null);
-            Assert.AreEqual(kunde.Briefanrede, "Egregio Signor");
+            Assert.AreEqual(kunde.Briefanrede, "Sehr geehrte Damen und Herren");
         }
 
         [TestMethod]

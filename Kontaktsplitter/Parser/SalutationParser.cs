@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using KellermanSoftware.NameParser;
 using Kontaktsplitter.Model;
@@ -50,7 +49,7 @@ namespace Kontaktsplitter.Parser
         private Kunde ManualCustomerAssignment(string salutation)
         {
             var result = new Kunde();
-            
+
             // Falls Nachname mit Freiherr beginnt
             if (salutation.Contains("Freiherr"))
             {
@@ -60,10 +59,10 @@ namespace Kontaktsplitter.Parser
                 salutation = salutation.Replace(result.Nachname, "Müller");
             }
 
-           
-
             var salutationArray = salutation.Split(' ');
-            if (salutation.Contains(","))
+
+
+            if (salutation.Contains(",") || salutation.Contains(" y "))
             {
                 for (int i = 0; i < salutationArray.Length; i++)
                 {
@@ -74,31 +73,26 @@ namespace Kontaktsplitter.Parser
                         break;
                     }
 
+                    // Spanischer doppelname mit y erkennen
+                    if (salutationArray[i] == "y" && i > 0 && salutationArray.Length >= i + 1)
+                    {
+                        result.Nachname = salutationArray[i - 1] + " " + salutationArray[i] + " " +
+                                          salutationArray[i + 1];
+
+                        salutation = salutation.Replace(result.Nachname, string.Empty);
+                    }
                 }
             }
 
-            var allTitels = DbAccess.GetTitels();
-            
+
 
             result.Geschlecht = FindGender(salutation);
 
-            // Titel herausfinden
-            foreach (var salutationPart in salutationArray)
-            {
-                // Mögliche Punkte entfernen
-               var currentTitel = allTitels.Find(t => t.Kuerzel == salutationPart || t.Bezeichnung == salutationPart);
-                if (currentTitel != null)
-                {
-                    result.Titel += currentTitel.Kuerzel + " ";
-                    salutation = salutation.Replace(salutationPart, string.Empty);
-                }
-            }
 
-            if (result.Titel != null)
-            {
-                result.Titel = result.Titel.TrimEnd();
 
-            }
+
+
+            salutation = ParseTitel(salutation, salutationArray, result);
 
             var anrede = FindSalutation(salutation);
 
@@ -108,11 +102,17 @@ namespace Kontaktsplitter.Parser
                 salutation = salutation.Replace(anrede.AnredeNormal, string.Empty);
             }
 
-            NameParserLogic parser = new NameParserLogic();
-            NameParts parts = parser.ParseName(salutation, NameOrder.AutoDetect);
+            NameParts parts = null;
+            if (!string.IsNullOrWhiteSpace(salutation))
+            {
+                NameParserLogic parser = new NameParserLogic();
+                parts = parser.ParseName(salutation, NameOrder.AutoDetect);
+            }
+
+
 
             // Falls anrede nicht manuell gefunden werden konnte
-            if (anrede == null)
+            if (anrede == null && parts != null)
             {
                 if (parts.IsMale == true)
                 {
@@ -132,46 +132,45 @@ namespace Kontaktsplitter.Parser
                         InternalGeschlecht = Geschlecht.Weiblich
                     };
                 }
-                else
-                {
-                    anrede = new Anrede()
-                    {
-                        AnredeNormal = "",
-                        AnredeBrief = "Sehr geehrte Damen und Herren",
-                        InternalGeschlecht = Geschlecht.Ohne
-                    };
-                }
-
-              
             }
 
-
+            // Falls anrede weder manuell oder durch parser nicht gefunden werden konnte.
+            if (anrede == null)
+            {
+                anrede = new Anrede()
+                {
+                    AnredeNormal = "",
+                    AnredeBrief = "Sehr geehrte Damen und Herren",
+                    InternalGeschlecht = Geschlecht.Ohne
+                };
+            }
 
             // Falls durch manuellen Vergleich Titel gefunden wurden diese verwednen. Sonst NameParser Bibiliothek
             var titel = result.Titel;
-            if (string.IsNullOrWhiteSpace(titel))
+            if (string.IsNullOrWhiteSpace(titel) && parts != null)
             {
                 titel = parts.Honorific;
             }
 
+            // Anrede mit Titel verfollständigen
             if (titel != null)
             {
                 anrede.AnredeNormal += " " + titel;
                 anrede.AnredeBrief += " " + titel;
             }
 
-            // Last Name bereits manuell gefunden
-            var lastName = parts.LastName;
-            if (!string.IsNullOrWhiteSpace(result.Nachname))
+            // Nachname  manuell gefunden
+            var lastName = result.Nachname;
+            if (string.IsNullOrWhiteSpace(result.Nachname) && parts != null)
             {
-                lastName = result.Nachname;
+                lastName = parts.LastName;
             }
 
-            // Last Name bereits manuell gefunden
-            var firstName = parts.FirstName;
-            if (!string.IsNullOrWhiteSpace(result.Vorname))
+            // Vorname manuell nicht gefunden
+            var firstName = result.Vorname;
+            if (string.IsNullOrWhiteSpace(result.Vorname) && parts != null)
             {
-                firstName = result.Vorname;
+                firstName = parts.FirstName;
             }
 
             return new Kunde()
@@ -183,6 +182,36 @@ namespace Kontaktsplitter.Parser
                 Anrede = anrede.AnredeNormal,
                 Briefanrede = anrede.AnredeBrief
             };
+        }
+
+        /// <summary>
+        /// Parst den Titel aus einem string[] mithife der DB
+        /// </summary>
+        /// <param name="salutation">Die gesamte salutation</param>
+        /// <param name="salutationArray">Die in ein Array aufgeteilte salutation</param>
+        /// <param name="currenCustomer">Der aktuelle Kunde </param>
+        /// <returns>Die vollständige salutation, ohne die gefundenen Titel</returns>
+        private static string ParseTitel(string salutation, string[] salutationArray, Kunde currenCustomer)
+        {
+            var allTitels = DbAccess.GetTitels();
+            // Titel herausfinden
+            foreach (var salutationPart in salutationArray)
+            {
+                // Mögliche Punkte entfernen
+                var currentTitel = allTitels.Find(t => t.Kuerzel == salutationPart || t.Bezeichnung == salutationPart);
+                if (currentTitel != null)
+                {
+                    currenCustomer.Titel += currentTitel.Kuerzel + " ";
+                    salutation = salutation.Replace(salutationPart, string.Empty);
+                }
+            }
+
+            if (currenCustomer.Titel != null)
+            {
+                currenCustomer.Titel = currenCustomer.Titel.TrimEnd();
+            }
+
+            return salutation;
         }
 
         /// <summary>
