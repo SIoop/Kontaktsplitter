@@ -132,10 +132,11 @@ namespace Kontaktsplitter
         /// <summary>
         /// Läd die Titel und Anreden der Datenbank neu
         /// Hierbei werden alle bisherigen einträge überschrieben
+        /// Hinweis: Dies Methode wird nur initial oder bei Fehlern benötig und nicht im laufenden Betrieb verwendet.
         /// </summary>
         public static void ReloadTableContent()
         {
-            
+            // Tabelleninhalt löschen
             using (var context = new DbAccess())
             {
                 context.Titel.RemoveRange(context.Titel.ToList());
@@ -145,6 +146,7 @@ namespace Kontaktsplitter
                 
             }
 
+            // Titel befüllen
             using (var context = new DbAccess())
             {
                 // Vorhandene Titel Befüllen
@@ -216,6 +218,7 @@ namespace Kontaktsplitter
                 context.SaveChanges();
             }
 
+            // Anreden befüllen
             using (var context = new DbAccess())
             {
                 // Vorhandene Anreden Befüllen

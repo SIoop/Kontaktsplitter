@@ -19,7 +19,7 @@ namespace Kontaktsplitter.Parser
         {
             // DbAccess.ReloadTableContent();
             salutation = PreFormatSalutationString(salutation);
-            return ManualCustomerAssignment(salutation);
+            return ParseSalutation(salutation);
         }
 
 
@@ -46,7 +46,7 @@ namespace Kontaktsplitter.Parser
         /// </summary>
         /// <param name="salutation">Die salutation, welche umgewandelt werden soll</param>
         /// <returns>Der neue Kunde</returns>
-        private Kunde ManualCustomerAssignment(string salutation)
+        private Kunde ParseSalutation(string salutation)
         {
             var result = new Kunde();
 
@@ -223,7 +223,7 @@ namespace Kontaktsplitter.Parser
         /// <returns>Die Anrede, falls nicht eindeutig erkannt Null</returns>
         private Anrede FindSalutation(string salutation)
         {
-            var anreden = DbAccess.GetAnreden();
+            var anreden = DbAccess.GetSalutation();
             foreach (var anrede in anreden)
             {
                 if (salutation.Contains(anrede.AnredeNormal + " ") && !string.IsNullOrEmpty(anrede.AnredeNormal) || salutation.Contains(anrede.AnredeBrief + " ") && !string.IsNullOrEmpty(anrede.AnredeBrief))
