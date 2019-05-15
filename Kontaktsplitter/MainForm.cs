@@ -84,7 +84,7 @@ namespace Kontaktsplitter
             TitelComboBox.Text = _currentCustomer.Titel;
             LastNameTextBox.Text = _currentCustomer.Nachname;
             FirstNameTextBox.Text = _currentCustomer.Vorname;
-            GenderComboBox.SelectedItem = _currentCustomer.Geschlecht.ToString();
+            GenderComboBox.SelectedItem = _currentCustomer.InternalGeschlecht.ToString();
         }
         /// <summary>
         /// Speichert den Kunden in der DB
@@ -117,6 +117,7 @@ namespace Kontaktsplitter
             MessageBox.Show(@"Kunde wurde erfolgreich gespeichert", @"Erfolg", MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
 
+            // Tectboxen wieder leeren
             SalutationComboBox.Text = string.Empty;
             LetterSalutationTextBox.Text = string.Empty;
             TitelComboBox.Text = string.Empty;

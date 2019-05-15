@@ -30,7 +30,7 @@ namespace Kontaktsplitter
                 }
                 MessageBox.Show(message, @"Es ist ein Fehler aufgetreten.", MessageBoxButtons.OK);
             }
-           
+
         }
     }
 }

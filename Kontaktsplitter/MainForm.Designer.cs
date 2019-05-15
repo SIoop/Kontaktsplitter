@@ -126,25 +126,25 @@
             // 
             // LastNameTextBox
             // 
-            this.LastNameTextBox.Location = new System.Drawing.Point(555, 252);
+            this.LastNameTextBox.Location = new System.Drawing.Point(515, 252);
             this.LastNameTextBox.Name = "LastNameTextBox";
-            this.LastNameTextBox.Size = new System.Drawing.Size(215, 20);
+            this.LastNameTextBox.Size = new System.Drawing.Size(255, 20);
             this.LastNameTextBox.TabIndex = 13;
             this.LastNameTextBox.Leave += new System.EventHandler(this.OnLastNameTextBoxLeave);
             // 
             // FirstNameTextBox
             // 
-            this.FirstNameTextBox.Location = new System.Drawing.Point(555, 226);
+            this.FirstNameTextBox.Location = new System.Drawing.Point(515, 226);
             this.FirstNameTextBox.Name = "FirstNameTextBox";
-            this.FirstNameTextBox.Size = new System.Drawing.Size(215, 20);
+            this.FirstNameTextBox.Size = new System.Drawing.Size(255, 20);
             this.FirstNameTextBox.TabIndex = 12;
             this.FirstNameTextBox.Leave += new System.EventHandler(this.OnFirstNameTextBoxLeave);
             // 
             // LetterSalutationTextBox
             // 
-            this.LetterSalutationTextBox.Location = new System.Drawing.Point(555, 146);
+            this.LetterSalutationTextBox.Location = new System.Drawing.Point(515, 146);
             this.LetterSalutationTextBox.Name = "LetterSalutationTextBox";
-            this.LetterSalutationTextBox.Size = new System.Drawing.Size(215, 20);
+            this.LetterSalutationTextBox.Size = new System.Drawing.Size(255, 20);
             this.LetterSalutationTextBox.TabIndex = 11;
             this.LetterSalutationTextBox.Leave += new System.EventHandler(this.OnLetterSalutationTextBoxLeave);
             // 
@@ -153,9 +153,9 @@
             this.TitelComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.TitelComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.TitelComboBox.FormattingEnabled = true;
-            this.TitelComboBox.Location = new System.Drawing.Point(555, 172);
+            this.TitelComboBox.Location = new System.Drawing.Point(515, 172);
             this.TitelComboBox.Name = "TitelComboBox";
-            this.TitelComboBox.Size = new System.Drawing.Size(215, 21);
+            this.TitelComboBox.Size = new System.Drawing.Size(255, 21);
             this.TitelComboBox.TabIndex = 10;
             this.TitelComboBox.Leave += new System.EventHandler(this.OnTitelComboBoxLeave);
             // 
@@ -167,9 +167,9 @@
             "weiblich",
             "männlich",
             "divers"});
-            this.GenderComboBox.Location = new System.Drawing.Point(555, 199);
+            this.GenderComboBox.Location = new System.Drawing.Point(515, 199);
             this.GenderComboBox.Name = "GenderComboBox";
-            this.GenderComboBox.Size = new System.Drawing.Size(215, 21);
+            this.GenderComboBox.Size = new System.Drawing.Size(255, 21);
             this.GenderComboBox.TabIndex = 9;
             this.GenderComboBox.Leave += new System.EventHandler(this.OnGenderComboBoxLeave);
             // 
@@ -237,9 +237,9 @@
             "Herrn",
             "Herrn Dr.",
             "Herrn Prof."});
-            this.SalutationComboBox.Location = new System.Drawing.Point(555, 119);
+            this.SalutationComboBox.Location = new System.Drawing.Point(515, 119);
             this.SalutationComboBox.Name = "SalutationComboBox";
-            this.SalutationComboBox.Size = new System.Drawing.Size(215, 21);
+            this.SalutationComboBox.Size = new System.Drawing.Size(255, 21);
             this.SalutationComboBox.TabIndex = 2;
             this.SalutationComboBox.Leave += new System.EventHandler(this.OnSalutationComboBoxLeave);
             // 

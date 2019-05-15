@@ -18,9 +18,11 @@ namespace Kontaktsplitter
         public DbSet<Anrede> Anreden { get; set; }
         public DbSet<Titel> Titel { get; set; }
 
+        /// <summary>
+        /// Konstruktor des DbAccess
+        /// </summary>
         public DbAccess() : base(GetConnection(), false)
         {
-
         }
 
         /// <summary>
@@ -209,8 +211,20 @@ namespace Kontaktsplitter
                     {
                         Id = 8,
                         Kuerzel = "nat.",
-                        Bezeichnung = "Naturwissenschaftler"
+                        Bezeichnung = "Naturwissenschaften"
                     },
+                    new Titel()
+                    {
+                        Id = 9,
+                        Kuerzel = "h.c.",
+                        Bezeichnung = "Honoris causa"
+                    },
+                    new Titel()
+                    {
+                        Id = 10,
+                        Kuerzel = "Sc.",
+                        Bezeichnung = "of Science"
+                    }
 
                 };
 
@@ -359,12 +373,10 @@ namespace Kontaktsplitter
                 {
                     context.Anreden.Add(anrede);
                 }
+
                 // In DB speichern
                 context.SaveChanges();
             }
-
-
-
         }
     }
 }

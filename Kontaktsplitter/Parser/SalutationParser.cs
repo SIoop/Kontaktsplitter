@@ -22,7 +22,11 @@ namespace Kontaktsplitter.Parser
             return ParseSalutation(salutation);
         }
 
-
+        /// <summary>
+        /// Formatiert die Anrede vor und entfernt " "
+        /// </summary>
+        /// <param name="salutation">Die Anrede</param>
+        /// <returns>Die formatierte Anrede</returns>
         private string PreFormatSalutationString(string salutation)
         {
             var resultString = salutation;
@@ -48,61 +52,28 @@ namespace Kontaktsplitter.Parser
         /// <returns>Der neue Kunde</returns>
         private Kunde ParseSalutation(string salutation)
         {
-            var result = new Kunde();
-
-            // Falls Nachname mit Freiherr beginnt
-            if (salutation.Contains("Freiherr"))
-            {
-                result.Nachname = salutation.Substring(salutation.IndexOf("Freiherr", StringComparison.OrdinalIgnoreCase));
-
-                // Müller dient hier nur als Platzhalter, da der Nachname bereits erkannt wurde, aber möglicherweiße der Vorname durch die Bibiliothek gefunden werden muss 
-                salutation = salutation.Replace(result.Nachname, "Müller");
-            }
-
+            var resultCustomer = new Kunde();
             var salutationArray = salutation.Split(' ');
 
 
-            if (salutation.Contains(",") || salutation.Contains(" y "))
-            {
-                for (int i = 0; i < salutationArray.Length; i++)
-                {
-                    if (salutationArray[i].Contains(","))
-                    {
-                        result.Nachname = salutationArray[i].Replace(",", "");
-                        result.Vorname = salutationArray[i + 1];
-                        break;
-                    }
-
-                    // Spanischer doppelname mit y erkennen
-                    if (salutationArray[i] == "y" && i > 0 && salutationArray.Length >= i + 1)
-                    {
-                        result.Nachname = salutationArray[i - 1] + " " + salutationArray[i] + " " +
-                                          salutationArray[i + 1];
-
-                        salutation = salutation.Replace(result.Nachname, string.Empty);
-                    }
-                }
-            }
-
-
-
-            salutation = ParseTitel(salutation, salutationArray, result);
-
-            // Gschlecht per regex bestimmen
-            if (result.InternalGeschlecht == Geschlecht.Ohne)
-            {
-                result.InternalGeschlecht = FindGender(salutation);
-            }
-
-
+            salutation = ParseSpecialSalutation(salutation, resultCustomer, salutationArray);
+            salutation = ParseTitel(salutation, salutationArray, resultCustomer);
             var anrede = FindSalutation(salutation);
 
+            // Geschlecht per regex bestimmen
+            if (resultCustomer.InternalGeschlecht == Geschlecht.Ohne)
+            {
+                resultCustomer.InternalGeschlecht = FindGender(salutation);
+            }
+
+            // Falls Anrede gefunden (z.B. Brief) diese aus string entfernen, damit die restliche Erkennung leichter ist.
             if (anrede != null)
             {
                 salutation = salutation.Replace(anrede.AnredeBrief, string.Empty);
                 salutation = salutation.Replace(anrede.AnredeNormal, string.Empty);
             }
 
+            // Name durch Bibiliothek finden
             NameParts parts = null;
             if (!string.IsNullOrWhiteSpace(salutation))
             {
@@ -110,8 +81,7 @@ namespace Kontaktsplitter.Parser
                 parts = parser.ParseName(salutation, NameOrder.AutoDetect);
             }
 
-
-
+            
             // Falls anrede nicht manuell gefunden werden konnte
             if (anrede == null && parts != null)
             {
@@ -135,7 +105,7 @@ namespace Kontaktsplitter.Parser
                 }
             }
 
-            // Falls anrede weder manuell oder durch parser nicht gefunden werden konnte.
+            // Falls anrede weder manuell oder durch parser gefunden werden konnte.
             if (anrede == null)
             {
                 anrede = new Anrede()
@@ -147,7 +117,7 @@ namespace Kontaktsplitter.Parser
             }
 
             // Falls durch manuellen Vergleich Titel gefunden wurden diese verwednen. Sonst NameParser Bibiliothek
-            var titel = result.Titel;
+            var titel = resultCustomer.Titel;
             if (string.IsNullOrWhiteSpace(titel) && parts != null)
             {
                 titel = parts.Honorific;
@@ -157,26 +127,26 @@ namespace Kontaktsplitter.Parser
             if (titel != null)
             {
                 anrede.AnredeNormal += " " + titel;
-                anrede.AnredeNormal = anrede.AnredeNormal.TrimStart();
+                anrede.AnredeNormal = anrede.AnredeNormal.TrimStart().TrimEnd();
                 anrede.AnredeBrief += " " + titel;
-                anrede.AnredeBrief = anrede.AnredeBrief.TrimStart();
+                anrede.AnredeBrief = anrede.AnredeBrief.TrimStart().TrimEnd();
             }
 
-            // Nachname  manuell gefunden
-            var lastName = result.Nachname;
-            if (string.IsNullOrWhiteSpace(result.Nachname) && parts != null)
+            // Nachname nicht manuell gefunden
+            var lastName = resultCustomer.Nachname;
+            if (string.IsNullOrWhiteSpace(resultCustomer.Nachname) && parts != null)
             {
                 lastName = parts.LastName;
             }
 
-            // Vorname manuell nicht gefunden
-            var firstName = result.Vorname;
-            if (string.IsNullOrWhiteSpace(result.Vorname) && parts != null)
+            // Vorname nicht manuell gefunden
+            var firstName = resultCustomer.Vorname;
+            if (string.IsNullOrWhiteSpace(resultCustomer.Vorname) && parts != null)
             {
                 firstName = parts.FirstName;
             }
 
-            // neuer Kunde erstellen und zurückgeben, falls einer der Werte bisher null ist -> string.Empty
+            // neuer Kunde erstellen und zurückgeben
             return new Kunde()
             {
                 Nachname = lastName,
@@ -186,6 +156,50 @@ namespace Kontaktsplitter.Parser
                 Anrede = anrede.AnredeNormal,
                 Briefanrede = anrede.AnredeBrief
             };
+        }
+
+        /// <summary>
+        /// Findet besondere Anreden wie Freiher oder spanische Doppelnamen
+        /// </summary>
+        /// <param name="salutation">Die Anrede</param>
+        /// <param name="customer">Der Kunde</param>
+        /// <param name="salutationArray">Die Anrede als string[]</param>
+        /// <returns>Die angepasste Anrede</returns>
+        private static string ParseSpecialSalutation(string salutation, Kunde customer, string[] salutationArray)
+        {
+            // Falls Nachname mit Freiherr beginnt
+            if (salutation.Contains("Freiherr"))
+            {
+                customer.Nachname = salutation.Substring(salutation.IndexOf("Freiherr", StringComparison.OrdinalIgnoreCase));
+
+                // Müller dient hier nur als Platzhalter, da der Nachname bereits erkannt wurde, aber möglicherweiße der Vorname durch die Bibiliothek gefunden werden muss 
+                salutation = salutation.Replace(customer.Nachname, "Müller");
+            }
+
+
+            if (salutation.Contains(",") || salutation.Contains(" y "))
+            {
+                for (int i = 0; i < salutationArray.Length; i++)
+                {
+                    if (salutationArray[i].Contains(","))
+                    {
+                        customer.Nachname = salutationArray[i].Replace(",", "");
+                        customer.Vorname = salutationArray[i + 1];
+                        break;
+                    }
+
+                    // Spanischer doppelname mit y erkennen
+                    if (salutationArray[i] == "y" && i > 0 && salutationArray.Length >= i + 1)
+                    {
+                        customer.Nachname = salutationArray[i - 1] + " " + salutationArray[i] + " " +
+                                          salutationArray[i + 1];
+
+                        salutation = salutation.Replace(customer.Nachname, string.Empty);
+                    }
+                }
+            }
+
+            return salutation;
         }
 
         /// <summary>

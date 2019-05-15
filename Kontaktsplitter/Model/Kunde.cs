@@ -25,8 +25,8 @@ namespace Kontaktsplitter.Model
         public string Titel { get; set; }
         public string Geschlecht
         {
-            get { return InternalGeschlecht.ToString(); }
-            set { InternalGeschlecht = GeschlechtHelper.GetGeschlecht(value); }
+            get => InternalGeschlecht.ToString();
+            set => InternalGeschlecht = GeschlechtHelper.GetGeschlecht(value);
         }
 
         [NotMapped]
